@@ -4,7 +4,8 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "assets/styles/tailwind.css";
-import "assets/styles/landing.css"
+import "assets/styles/landing.css";
+import { ChakraProvider, extendTheme, ColorModeScript } from "@chakra-ui/react";
 
 // layouts
 
@@ -18,21 +19,31 @@ import Profile from "views/Profile.js";
 import Index from "views/Index.js";
 import NFT_Create from "views/NFT_Create.js";
 
+const config = {
+  initialColorMode: "dark",
+  useSystemColorMode: false,
+};
+const theme = extendTheme({ config });
 
 ReactDOM.render(
-  <BrowserRouter>
-    <Switch>
-      {/* add routes with layouts */}
-      <Route path="/admin" component={Admin} />
-      <Route path="/auth" component={Auth} />
-      {/* add routes without layouts */}
-      <Route path="/landing" exact component={Landing} />
-      <Route path="/profile" exact component={Profile} />
-      <Route path="/pixel_canvas" exact component={NFT_Create} />
-      <Route path="/" exact component={Index} />
-      {/* add redirect for first page */}
-      <Redirect from="*" to="/" />
-    </Switch>
-  </BrowserRouter>,
+  <>
+    <ChakraProvider>
+      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+      <BrowserRouter>
+        <Switch>
+          {/* add routes with layouts */}
+          <Route path="/admin" component={Admin} />
+          <Route path="/auth" component={Auth} />
+          {/* add routes without layouts */}
+          <Route path="/landing" exact component={Landing} />
+          <Route path="/profile" exact component={Profile} />
+          <Route path="/pixel_canvas" exact component={NFT_Create} />
+          <Route path="/" exact component={Index} />
+          {/* add redirect for first page */}
+          <Redirect from="*" to="/" />
+        </Switch>
+      </BrowserRouter>
+    </ChakraProvider>
+  </>,
   document.getElementById("root")
 );
