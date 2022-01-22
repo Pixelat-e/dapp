@@ -1,7 +1,9 @@
 const plugin = require("tailwindcss/plugin");
 const colors = require("tailwindcss/colors");
+const defaultTheme = require('tailwindcss/defaultTheme')
 
 module.exports = {
+  mode: 'jit',
   purge: {
     enabled: true,
     content: [
@@ -19,6 +21,10 @@ module.exports = {
     },
   },
   theme: {
+    screens: {
+      xs: '540px',
+      ...defaultTheme.screens,
+    },
     colors: {
       ...colors,
     },

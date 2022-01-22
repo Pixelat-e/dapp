@@ -9,6 +9,7 @@ export default function Index() {
   return (
     <>
       <IndexNavbar fixed />
+    
       <section className="header relative pt-16 items-center flex h-screen max-h-860-px">
         <div className="container mx-auto items-center flex flex-wrap">
           <div className="w-full md:w-8/12 lg:w-6/12 xl:w-6/12 px-4">
@@ -601,7 +602,6 @@ export default function Index() {
           </div>
         </div>
       </section>
-
       <section className="pb-16 bg-blueGray-200 relative pt-32">
         <div
           className="-mt-20 top-0 bottom-auto left-0 right-0 w-full absolute h-20"
