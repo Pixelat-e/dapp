@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-export default Frames = ({ frames, togglesFrames }) => {
+const Frames = ({ frames, togglesFrames, boardManager }) => {
   // const [images,setImaages] = useState([]);
   const framesEl = useRef();
   const galleryEl = useRef();
@@ -11,7 +11,7 @@ export default Frames = ({ frames, togglesFrames }) => {
     // galleryEl.current.innerHTML = "";
   };
   const close = () => {
-    frameEl.style.transform = "translate(-50%,-50%) scale(0,0)";
+    framesEl.style.transform = "translate(-50%,-50%) scale(0,0)";
   };
 
   const handleBlur = () => {
@@ -29,17 +29,17 @@ export default Frames = ({ frames, togglesFrames }) => {
   // closes the frame overlay and loads this image
   const imgClickCallback = (idx) => {
     return () => {
-      board.loadFrame(idx);
+      boardManager.loadFrame(idx);
       togglesFrames(false);
     };
   };
 
   const imgContextCallback = (idx) => {
-    return () => {
+    return (e) => {
       e.preventDefault();
-      var del_confirmation = confirm("Delete?");
+      var del_confirmation = window.confirm("Delete?");
       if (del_confirmation) {
-        board.deleteFrame(idx);
+        boardManager.deleteFrame(idx);
         // Frames.open();
       }
     };
@@ -65,3 +65,4 @@ export default Frames = ({ frames, togglesFrames }) => {
     </div>
   );
 };
+export default Frames

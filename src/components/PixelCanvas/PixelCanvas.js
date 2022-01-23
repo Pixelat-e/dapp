@@ -6,6 +6,8 @@ import Tools from "./Tools";
 import { colors, tools } from "./config";
 import Frames from "./utils/Frames";
 import Popup from "./utils/Popup";
+import {Point} from "./utils/Shapes";
+import useScript from "./utils/useScript";
 
 import { useState, useEffect, useRef } from "react";
 
@@ -23,7 +25,8 @@ const PixelCanvas = ({}) => {
   const board_manager = new BoardManager();
 
   let canvasData = localStorage.getItem("pc-canvas-data");
-
+  
+  useScript("/lib/gif.js");
   useEffect(() => {
     board_manager.setCanvas(canvas.current);
     let ctx = canvas.getContext("2d");
@@ -41,23 +44,24 @@ const PixelCanvas = ({}) => {
     );
     return;
   }
-  setImgRes;
+  // setImgRes;
 
   function handleHover(e) {
     if (this.active) {
+      let imgRes = board_manager.getImgRes();
       var rect = canvas.getBoundingClientRect();
       var x = e.clientX - rect.left;
       var y = e.clientY - rect.top;
       x = Math.floor((imgRes.width * x) / canvas.clientWidth);
       y = Math.floor((imgRes.height * y) / canvas.clientHeight);
-      if (tools[Tool.pen]) {
+      if (board_manager.getCurTool()) {
         var p = new Point(x, y);
         if (!p.equals(this.previous_point)) {
           this.previous_point = p;
           Board.drawPoint(p.x, p.y);
           // board_manager.drawPoint();
         }
-      } else if (tools[Tool.eraser]) {
+      } else if (board_manager.getCurTool() == "eraser") { //TODO, titally wrong
         this.erase(x, y);
       }
     }
@@ -74,7 +78,8 @@ const PixelCanvas = ({}) => {
         <Board
           height={size.width}
           width={size.height}
-          imgRes={imgRes}
+          board_manager={board_manager}
+          imgRes={board_manager.imgRes}
           canvas={canvas}
           board_manager={board_manager}
           setActive={setActive}
@@ -86,7 +91,7 @@ const PixelCanvas = ({}) => {
         <Palette board_manager={board_manager} />
         {isFramesOpen && <Frames togglesFrames={togglesFrames} />}
       </PixelCanvasBody>
-      <Popup clickHandler={popupClick} imgRes={imgRes} setImgRes={setImgRes} />
+      <Popup clickHandler={popupClick} board_manager={board_manager} imgRes={board_manager.imgRes} />
     </>
   );
 };

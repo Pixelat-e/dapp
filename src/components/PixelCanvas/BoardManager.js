@@ -1,10 +1,24 @@
+import { isGetAccessor } from "typescript";
 import { colors } from "./config";
+// import * as from "./lib/gif";
+
 export default class BoardManager {
+  
   brushColor = colors[0];
   curTool = 0;
   imgRes = { width: 32, height: 32 };
+  // gif = new window.GIF({
+  //   workers: 2,
+  //   quality: 10,
+  //   width: 10 * this.imgRes.width,
+  //   height: 10 * this.imgRes.height,
+  // });
   constructor(canvas = null) {
     this.canvas = canvas;
+  }
+
+  getCurTool(){
+    return this.curTool;
   }
 
   setCurTool(tool) {
@@ -161,12 +175,12 @@ export default class BoardManager {
 
   renderGIF = () => {
     this.frames.forEach((frame) => {
-      gif.addFrame(frame[0], {
+      this.gif.addFrame(frame[0], {
         copy: true,
         delay: 100,
       });
     });
-    gif.render();
+    this.gif.render();
   };
 
   undo = () => {
