@@ -18,6 +18,7 @@ import Landing from "views/Landing.js";
 import Profile from "views/Profile.js";
 import Index from "views/Index.js";
 import NFT_Create from "views/NFT_Create.js";
+import NFT_Options from "views/NFT_Options";
 
 const config = {
   initialColorMode: "dark",
@@ -38,6 +39,7 @@ ReactDOM.render(
           <Route path="/landing" exact component={Landing} />
           <Route path="/profile" exact component={Profile} />
           <Route path="/pixel_canvas" exact component={NFT_Create} />
+          <Route path="/options" exact component={NFT_Options} />
           <Route path="/" exact component={Index} />
           {/* add redirect for first page */}
           <Redirect from="*" to="/" />
