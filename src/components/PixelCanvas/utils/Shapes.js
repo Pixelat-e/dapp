@@ -24,19 +24,22 @@
  */
 
 
-class Point {
+export class Point {
 	constructor(x, y){
 		this.x = x;
 		this.y = y;
 	}
-	equals(point) {
+	equals = (point) => {
+		console.log("CHECKING EQUAL")
+		console.log(point)
+		console.log(this)
 		return((this.x == point.x) && (this.y == point.y))
 	}
 }
 
 
 
-function line(p1, p2){
+export function line(p1, p2){
 	/* this function calculates the points of the line with endpoints p1 &p2
 	 */
  	let points = [];
@@ -71,7 +74,7 @@ function line(p1, p2){
 //console.log(line(new Point(1, 1), new Point(5, 5)));
 
 
-function circle(r, pc){
+export function circle(r, pc){
 				/* This function returns points of Circle with radius r and center as pc*/
 
 	let points = [];
@@ -134,7 +137,7 @@ function _sym8(points){
 }
 
 
-function ellipse(rx, ry, pc){
+export function ellipse(rx, ry, pc){
 	/* This function return the points of the ellipse with major axis rx and minor axis ry with center pc */
 	let points = [];
 	let x = 0;

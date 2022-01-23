@@ -28,6 +28,7 @@ const Tools = ({ brushMode, setbrushMode, board_manager }) => {
           bgColor={brushMode == i && "gray.300"}
           cursor="pointer"
           onClick={(e) => callbacks[i](e,tool["name"])}
+          className="cursor-pointer"
           // style={{
           //   backgroundColor: i == activeTool?"grey.200":""
           // }}

@@ -28,7 +28,7 @@ const Palette = ({board_manager}) => {
           paddingTop={{ base: "10%", sm: "35px", md: "50px" }}
           bgColor={"rgb(" + color[0] + "," + color[1] + "," + color[2] + ")"}
           onClick={selectColor(color)}
-          
+          className="cursor-pointer"
         >
         </Flex>
       ))}

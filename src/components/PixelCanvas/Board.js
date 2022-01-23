@@ -19,16 +19,17 @@ const Board = ({
   handleClick,
   handleHover,
   brushMode,
-  setBrushMode
+  setBrushMode,
+  board_manager
 }) => {
-  const [imgData, setImgData] = useState([...Array(imgRes.width)].map(e => Array(imgRes.height).fill([255, 255, 255, 255])));
-  const [frames,setFrames] = useState([]);
-  const [toolColor,setToolColor] = useState(colors[0]);
-  const [PreviousPoint, setPreviousPoint] = useState([]);
-  function handleMouseDown(e) {
-    this.PreviousPoint = new Point(undefined, undefined);
-    setActive(true);
-  }
+  // const [imgData, setImgData] = useState();
+  // const [frames,setFrames] = useState([]);
+  // const [toolColor,setToolColor] = useState(colors[0]);
+  // const [PreviousPoint, setPreviousPoint] = useState([]);
+  // function handleMouseDown(e) {
+  //   this.PreviousPoint = new Point(undefined, undefined);
+  //   setActive(true);
+  // }
 
 
   
@@ -46,10 +47,11 @@ const Board = ({
         bgColor="white"
         width={width}
         height={height}
-        onMouseDown={() => setActive(true)}
-        onMouseUp={() => setActive(false)}
+        onMouseDown={board_manager.canvasMouseDown}
+        onMouseUp={board_manager.canvasMouseUp}
         onClick={handleClick}
-        onMouseOver={handleHover}
+        onMouseMove={board_manager.canvasMouseMove}
+        // onMouseOver={handleHover}
       />
       <Flex
         width={width}
