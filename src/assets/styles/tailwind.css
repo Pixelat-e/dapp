@@ -1909,6 +1909,10 @@ select {
     max-height: 860px;
 }
 
+.max-h-980-px {
+    max-height: 980px;
+}
+
 .max-w-full {
     max-width: 100%;
 }
@@ -2082,6 +2086,11 @@ select {
 .px-12 {
     padding-left: 3rem;
     padding-right: 3rem;
+}
+
+.px-16 {
+    padding-left: 4rem;
+    padding-right: 4rem;
 }
 
 .py-16 {
@@ -2299,6 +2308,10 @@ select {
     left: -20px;
 }
 
+.-left-200-px {
+    left: -200px;
+}
+
 .top-25-px {
     top: 25px;
 }
@@ -2309,6 +2322,10 @@ select {
 
 .top-95-px {
     top: 95px;
+}
+
+.top-200-px {
+    top: 200px;
 }
 
 .left-145-px {
@@ -2325,6 +2342,10 @@ select {
 
 .left-260-px {
     left: 260px;
+}
+
+.left-420-px {
+    left: 420px;
 }
 
 * {
@@ -2983,6 +3004,9 @@ select {
     .lg\:w-auto {
         width: auto;
     }
+    .lg\:w-1\/5 {
+        width: 20%;
+    }
     .lg\:w-3\/12 {
         width: 25%;
     }
@@ -3019,3 +3043,31 @@ select {
 }
 
 @media (min-width: 1536px) {}
+
+.animation-delay-2000 {
+    animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+    animation-delay: 4s;
+}
+
+.animate-blob-0 {
+    transform: translate(0px, 0px) scale(1);
+}
+
+.animate-blob-33 {
+    transform: translate(0px, 0px) scale(1);
+}
+
+.animate-blob-66 {
+    transform: translate(0px, 0px) scale(1);
+}
+
+.animate-blob-100 {
+    transform: translate(0px, 0px) scale(1);
+}
+
+.blur-xl {
+    filter: '200px';
+}
