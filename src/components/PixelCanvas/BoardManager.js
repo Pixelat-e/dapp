@@ -1,28 +1,38 @@
 import { isGetAccessor } from "typescript";
-import { colors } from "./config";
+import { colors, tools } from "./config";
+import { Point, circle, ellipse, line } from "./utils/Shapes";
 // import * as from "./lib/gif";
 
 export default class BoardManager {
   
   brushColor = colors[0];
-  curTool = 0;
+  curTool = tools[0];
+  canvasRes = { width: 256, height: 256 };
   imgRes = { width: 32, height: 32 };
-  // gif = new window.GIF({
-  //   workers: 2,
-  //   quality: 10,
-  //   width: 10 * this.imgRes.width,
-  //   height: 10 * this.imgRes.height,
-  // });
+  imgData = [...Array(this.imgRes.width)].map(e => Array(this.imgRes.height).fill([255, 255, 255, 255]));
+  isActive = true;
+  previous_point = null;
+  canvas = null;
+  ctx = null;
+  lc = [];
+  steps = [];
+  redo_arr = [];
+  frames = [];
+  isPopup = false;
+
   constructor(canvas = null) {
     this.canvas = canvas;
+    this.previous_point = new Point(undefined,undefined); //undefined, undefined
   }
 
   getCurTool(){
+    // console.log("Get cur tool");
+    // console.log(this.curTool);
     return this.curTool;
   }
 
-  setCurTool(tool) {
-    this.curTool = tool;
+  setCurTool(idx) {
+    this.curTool = tools[idx];
   }
 
   getCurBrushColor() {
@@ -30,25 +40,44 @@ export default class BoardManager {
   }
 
   setCurBrushColor(color) {
+    // console.log("setCurBrushColor")
+    // console.log(color)
+    // console.log(this.brushColor)
+    // let curColor = this.getCurBrushColor();
+    this.ctx.fillStyle = "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")";
+    this.ctx.globalAlpha = 1; // TODO: this may not be necessary
     this.brushColor = color;
   }
 
   setCanvas(canvas) {
+    console.log("SET CANVAS");
     this.canvas = canvas;
+    this.setCtx(canvas.getContext("2d"));
+    console.log(canvas.getContext("2d"))
+    this.ctx.fillStyle = "black";  //TODO:
+    this.ctx.globalAlpha = 1;
+    this.ctx.fillRect(0, 0, this.canvasRes.width, this.canvasRes.height);
   }
 
   setCtx(ctx) {
     this.ctx = ctx;
   }
 
-  drawPoint(x, y, count = null) {
-    if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
+  drawPoint(x, y, count = false) {
+    console.log(`DRAW POINT: ${x}, ${y}`)
+    console.log(this.imgRes);
+    if (x >= 0 && x < this.imgRes.width && y >= 0 && y < this.imgRes.height) {
+      console.log("VALID POINT")
       this.imgData[x][y] = this.brushColor;
+      console.log(this.imgData)
+      console.log(this.ctx)
+      let scaleRatio = this.canvasRes.width / this.imgRes.width;
+      console.log(`scaleRatio: ${scaleRatio}, ${x * scaleRatio}, ${y * scaleRatio}`)
       this.ctx.fillRect(
-        Math.floor(x * (this.w / this.width)),
-        Math.floor(y * (this.h / this.height)),
-        Math.floor(this.w / this.width),
-        Math.floor(this.h / this.height)
+        Math.floor(x * scaleRatio),
+        Math.floor(y * scaleRatio),
+        Math.floor(scaleRatio),
+        Math.floor(scaleRatio)
       );
       if (
         !count &&
@@ -99,12 +128,6 @@ export default class BoardManager {
   };
 
   setBrushTool = (idx) => {
-    // for (let idx in tools){
-    //   if (tools[idx]["name"] == name){
-    //     this.setCurTool(idx);
-    //     break;
-    //   }
-    // }
     return (e, name) => {
       this.setCurTool(idx);
     };
@@ -165,11 +188,11 @@ export default class BoardManager {
     var i, j;
     for (i = 0; i < this.width; i++) {
       for (j = 0; j < this.height; j++) {
-        this.setcolor(img[i][j]);
+        this.setCurBrushColor(img[i][j]);
         this.draw(i, j);
       }
     }
-    this.setcolor(tmp_color);
+    this.setCurBrushColor(tmp_color);
     this.ctx.globalAlpha = tmp_alpha;
   };
 
@@ -188,7 +211,7 @@ export default class BoardManager {
     this.redo_arr.push(this.steps.pop());
     var step;
     this.steps.forEach((step) => {
-      this.setcolor(step[2]);
+      this.setCurBrushColor(step[2]);
       this.ctx.globalAlpha = step[3];
       this.draw(step[0], step[1], true);
     });
@@ -198,7 +221,7 @@ export default class BoardManager {
     this.steps.push(this.redo_arr.pop());
     var step;
     this.steps.forEach((step) => {
-      this.setcolor(step[2]);
+      this.setCurBrushColor(step[2]);
       this.ctx.globalAlpha = step[3];
       this.draw(step[0], step[1], true);
     });
@@ -250,7 +273,7 @@ export default class BoardManager {
                 if (k % 4 == 0) ctr++;
               });
               avg = avg.map((x) => ~~(x / ctr));
-              _this.setcolor(avg);
+              _this.setCurBrushColor(avg);
               _this.draw(i, j);
             }
           }
@@ -258,4 +281,88 @@ export default class BoardManager {
       };
     };
   };
+
+  canvasMouseMove = (e) => {
+    // console.log("MOUSE MOVE");
+    // console.log(`is active? ${this.isActive}`)
+    if (this.isActive) {
+      let imgRes = this.imgRes;
+      let canvas = this.canvas;
+      var rect = canvas.getBoundingClientRect();
+      var x = e.clientX - rect.left;
+      var y = e.clientY - rect.top;
+      x = Math.floor((imgRes.width * x) / canvas.clientWidth);
+      y = Math.floor((imgRes.height * y) / canvas.clientHeight);
+      if (this.getCurTool()["name"] == "Pen") {
+        var p = new Point(x, y);
+        if (!p.equals(this.previous_point)) {
+          this.previous_point = p;
+          this.drawPoint(p.x, p.y);
+          // board_manager.drawPoint();
+        }
+      } else if (this.getCurTool()["name"] == "Eraser") { //TODO, titally wrong
+        this.erase(x, y);
+      }
+    }
+  }
+
+  canvasMouseDown = (e) => {
+    this.previous_point = new Point(undefined,undefined)
+    this.isActive = true;
+    console.log("Active")
+  }
+
+  canvasMouseUp = (e) => {
+    this.previous_point = new Point(undefined,undefined)
+    this.isActive = false;
+    console.log("Active false")
+    if (this.previous_point.x !== undefined) {
+      return; // Don't re-paint the last point in a streak
+    }
+
+    var rect = this.canvas.getBoundingClientRect();
+    var x = e.clientX - rect.left;
+    var y = e.clientY - rect.top;
+    x = Math.floor(this.width * x / this.canvas.clientWidth);
+    y = Math.floor(this.height * y / this.canvas.clientHeight);
+    if (this.getCurTool()["name"] == "Fill") {
+      this.filler(x, y, this.data[x][y]);
+    } else if (this.getCurTool()["name"] == "Eraser") {
+      var temp = this.color;
+      var tga = this.ctx.globalAlpha;
+      this.setCurBrushColor([255, 255, 255, 255]);
+      this.drawPoint(x, y);
+      this.setCurBrushColor(temp);
+      this.ctx.globalAlpha = tga;
+    } else if (this.getCurTool()["name"] == "Line") {
+      this.lc.push(new Point(x, y));
+      if (this.lc.length == 2) {
+        var lp = line(this.lc[0], this.lc[1]);
+        this.lc = [];
+        var p;
+        for (p of lp) this.draw(p.x, p.y);
+      }
+    } else if (this.getCurTool()["name"] == "Circle") {
+      var centre = new Point(x, y);
+      var radius = +prompt("radius?");
+      var lp = circle(radius, centre);
+      var p;
+      for (p of lp) this.draw(p.x, p.y);
+    } else if (this.getCurTool()["name"] == "Ellipse") {
+      var center = new Point(x, y);
+      var radiusX = +prompt("X radius?");
+      var radiusY = +prompt("Y radius?");
+      var lp = ellipse(radiusX, radiusY, center);
+      for (p of lp)
+        this.draw(p.x, p.y);
+    } else {
+      this.previous_point = new Point(x,y);
+      this.drawPoint(x, y);
+    }
+  }
+
+  newProject = () =>{
+    localStorage.removeItem('pc-canvas-data');
+  }
+
 }

@@ -36,6 +36,10 @@ const PixelCanvas = ({}) => {
     ctx.globalAlpha = 1;
     ctx.fillRect(0, 0, canvasEl.width, canvasEl.height);
     window.onmouseup = () => setActive(false);
+    return () => {
+      board_manager.saveInLocal();
+      return "Data will be lost if you leave the page, are you sure?";
+    }
   }, []);
 
   function handleClick(e) {
@@ -92,7 +96,10 @@ const PixelCanvas = ({}) => {
         <Palette board_manager={board_manager} />
         {isFramesOpen && <Frames togglesFrames={togglesFrames} />}
       </PixelCanvasBody>
-      <Popup clickHandler={popupClick} board_manager={board_manager} imgRes={board_manager.imgRes} />
+      {board_manager.isPopup && (
+        <Popup clickHandler={popupClick} board_manager={board_manager} imgRes={board_manager.imgRes} />
+      )}
+      
     </>
   );
 };
