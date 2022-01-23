@@ -40,10 +40,14 @@ const PixelCanvas = ({}) => {
   let canvasData = localStorage.getItem("pc-canvas-data");
   const resizeHandler = () => {
     console.log("RESIZE HANDLER")
+    // save img first before clear
+    let imgSoFar = board_manager.saveImgUrl();
+
     // setSize(pixel_canvas_dim(board_manager))
     let newCanvasRes = pixel_canvas_dim(board_manager)
     board_manager.setCanvasRes(newCanvasRes)
     board_manager.handleWindowResize();
+    board_manager.setImage(imgSoFar);
   }
   useScript("/lib/gif.js");
   useEffect(() => {
@@ -58,7 +62,10 @@ const PixelCanvas = ({}) => {
     ctx.globalAlpha = 1;
     ctx.fillRect(0, 0, canvasEl.width, canvasEl.height);
     // window.onmouseup = () => setActive(false);
-    resizeHandler();
+    let newCanvasRes = pixel_canvas_dim(board_manager)
+    board_manager.setCanvasRes(newCanvasRes)
+    board_manager.setDimmensions();
+    // resizeHandler();
     window.addEventListener('resize', resizeHandler);
 
 

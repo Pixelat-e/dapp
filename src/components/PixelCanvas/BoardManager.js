@@ -106,6 +106,8 @@ export default class BoardManager {
   drawPoint(x, y, count = false) {
     console.log(`DRAW POINT: ${x}, ${y}`)
     console.log(this.imgRes);
+    console.log("ctx")
+    // console.log(this.ctx)
     if (x >= 0 && x < this.imgRes.width && y >= 0 && y < this.imgRes.height) {
       console.log("VALID POINT")
       this.imgData[x][y] = this.brushColor;
@@ -272,6 +274,21 @@ export default class BoardManager {
     });
   };
 
+  setImage = (url) => {
+    let img = new Image();
+    img.setAttribute('src', url);
+    img.setAttribute('height', `${this.canvasRes.height}px`);
+    img.setAttribute('width', `${this.canvasRes.width}px`);
+    img.addEventListener("load",  () => {
+        console.log(img)
+        this.ctx.drawImage(img, 0, 0,this.canvasRes.height,this.canvasRes.width);
+    });
+  }
+
+  saveImgUrl = () => {
+    return this.canvas.toDataURL()
+  }
+
   saveInLocal = () => {
     /*let a = this.frames.map(frame=> [frame[0].src,frame[1]]);
     let f =  JSON.stringify(a);*/
@@ -280,7 +297,7 @@ export default class BoardManager {
       currColor: this.color,
       width: this.width,
       height: this.height,
-      url: this.canvas.toDataURL(),
+      url: this.saveImgUrl(),
       steps: this.steps,
       redo_arr: this.redo_arr,
       dim: window.dim,
@@ -414,20 +431,22 @@ export default class BoardManager {
     localStorage.removeItem('pc-canvas-data');
   }
 
-
-
-  handleWindowResize(){
-    console.log(this.canvas)
-    // let bounds = this.canvas.getBoundingClientRect();
-    // this.canvasRes.width = bounds.clientWidth;
-    // this.canvasRes.height = bounds.clientHeight;
-
+  setDimmensions = () => {
     this.canvas.width = this.canvasRes.width;
     this.canvas.height = this.canvasRes.height;
     this.canvasGrid.style.width = `${this.canvasRes.width}px`;
     this.canvasGrid.style.height = `${this.canvasRes.height}px`;
 
     this.setCanvasGridSize();
+  }
+
+  handleWindowResize(){
+    console.log(this.canvas)
+    // let bounds = this.canvas.getBoundingClientRect();
+    // this.canvasRes.width = bounds.clientWidth;
+    // this.canvasRes.height = bounds.clientHeight;
+    this.setDimmensions();
+    
   }
 
 }
