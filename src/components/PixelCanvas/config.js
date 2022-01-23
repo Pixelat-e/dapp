@@ -26,42 +26,52 @@ export var colors = [
 export var tools = [
   {
     name: "Pen",
-    icon: FaPencilAlt
+    icon: FaPencilAlt,
+    isActive: true,
   },
   {
     name: "Eraser",
-    icon: FaEraser
+    icon: FaEraser,
+    isActive: false
   },
   {
     name: "Fill",
-    icon: FaFill
+    icon: FaFill,
+    isActive: false,
   },
   {
     name: "Line",
-    icon: FaSlash
+    icon: FaSlash,
+    isActive: false,
   },
   {
     name: "Circle",
-    icon: FaRegCircle
+    icon: FaRegCircle,
+    isActive: false,
   },
   {
     name: "Ellipse",
-    icon: FaRegCircle
+    icon: FaRegCircle,
+    isActive: false,
   },
   {
     name: "Add Frame",
-    icon: FaPlus
+    icon: FaPlus,
+    isActive: false,
   },
   {
     name: "Undo",
-    icon: FaUndo
+    icon: FaUndo,
+    isActive: false,
   },
   {
     name: "Redo",
-    icon: FaRedo
+    icon: FaRedo,
+    isActive: false,
   },
   {
     name: "Clear Canvas",
-    icon: FaTrashAlt
+    icon: FaTrashAlt,
+    isActive: false,
   }
 ]
