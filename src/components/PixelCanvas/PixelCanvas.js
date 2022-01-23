@@ -11,67 +11,71 @@ import useScript from "./utils/useScript";
 
 import { useState, useEffect, useRef } from "react";
 
-const popupClick = () => {};
+const pixel_canvas_dim = (b_m) => {
+  let imgRes = b_m.getImgRes();
+  let aspectRatio = imgRes.width / imgRes.height;
+  console.log(`aspect ratio: ${aspectRatio}`)
+  let w = window.innerWidth/3;
+  let h =  w / aspectRatio;
+  
+  return {
+    width:w,
+    height:h 
+  };
+}
 
+
+const popupClick = () => {};
+//TODO: On window resize, do the three.js typical resize code
 const PixelCanvas = ({}) => {
-  const [size, setSize] = useState({ width: 250, height: 250 });
-  // const [imgRes, setImgRes] = useState({ width: 32, height: 32 });
   const [brushMode, setBrushMode] = useState(null);
-  const [steps, setSteps] = useState([]);
-  const [active, setActive] = useState(false);
+  // const [active, setActive] = useState(false);
   const [isFramesOpen, togglesFrames] = useState(false);
-  // const [curTool, setCurTool] = useState(0);
   const canvas = useRef();
+  const canvas_grid = useRef();
+
   const board_manager = new BoardManager();
+  // const [size, setSize] = useState(pixel_canvas_dim(board_manager));
 
   let canvasData = localStorage.getItem("pc-canvas-data");
-  
+  const resizeHandler = () => {
+    console.log("RESIZE HANDLER")
+    // setSize(pixel_canvas_dim(board_manager))
+    let newCanvasRes = pixel_canvas_dim(board_manager)
+    board_manager.setCanvasRes(newCanvasRes)
+    board_manager.handleWindowResize();
+  }
   useScript("/lib/gif.js");
   useEffect(() => {
     let canvasEl = canvas.current;
+    let canvasGridEl = canvas_grid.current;
+    console.log(canvas_grid)
     board_manager.setCanvas(canvasEl);
+    board_manager.setCanvasGrid(canvasGridEl);
     let ctx = canvasEl.getContext("2d");
     board_manager.setCtx(ctx);
     ctx.fillStyle = "white";
     ctx.globalAlpha = 1;
     ctx.fillRect(0, 0, canvasEl.width, canvasEl.height);
-    window.onmouseup = () => setActive(false);
+    // window.onmouseup = () => setActive(false);
+    resizeHandler();
+    window.addEventListener('resize', resizeHandler);
+
+
     return () => {
+      window.removeEventListener('resize', resizeHandler);
       board_manager.saveInLocal();
       return "Data will be lost if you leave the page, are you sure?";
     }
   }, []);
 
-  function handleClick(e) {
-    console.log(
-      e.clientX - e.target.offsetLeft,
-      e.clientY - e.target.offsetTop
-    );
-    return;
-  }
-  // setImgRes;
-
-  function handleHover(e) {
-    if (active) {
-      let imgRes = board_manager.getImgRes();
-      var rect = canvas.getBoundingClientRect();
-      var x = e.clientX - rect.left;
-      var y = e.clientY - rect.top;
-      x = Math.floor((imgRes.width * x) / canvas.clientWidth);
-      y = Math.floor((imgRes.height * y) / canvas.clientHeight);
-      if (board_manager.getCurTool()) {
-        var p = new Point(x, y);
-        if (!p.equals(this.previous_point)) {
-          this.previous_point = p;
-          Board.drawPoint(p.x, p.y);
-          // board_manager.drawPoint();
-        }
-      } else if (board_manager.getCurTool() == "eraser") { //TODO, titally wrong
-        this.erase(x, y);
-      }
-    }
-  }
-
+  // function handleClick(e) {
+  //   console.log(
+  //     e.clientX - e.target.offsetLeft,
+  //     e.clientY - e.target.offsetTop
+  //   );
+  //   return;
+  // }
   return (
     <>
       <PixelCanvasBody>
@@ -81,17 +85,9 @@ const PixelCanvas = ({}) => {
           board_manager={board_manager}
         />
         <Board
-          height={size.width}
-          width={size.height}
           board_manager={board_manager}
-          imgRes={board_manager.imgRes}
           canvas={canvas}
-          board_manager={board_manager}
-          setActive={setActive}
-          handleClick={handleClick}
-          handleHover={handleHover}
-          brushMode={brushMode}
-          setBrushMode={setBrushMode}
+          canvas_grid={canvas_grid}
         />
         <Palette board_manager={board_manager} />
         {isFramesOpen && <Frames togglesFrames={togglesFrames} />}

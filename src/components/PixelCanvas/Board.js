@@ -10,11 +10,14 @@ const SVG = chakra("svg");
 const Rect = chakra("rect");
 
 
+
+
 const Board = ({
   height,
   width,
   imgRes,
   canvas,
+  canvas_grid,
   setActive,
   handleClick,
   handleHover,
@@ -31,7 +34,12 @@ const Board = ({
   //   setActive(true);
   // }
 
-
+  const get_grid_size = () => {
+    let imgRes = board_manager.getImgRes();
+    let canvasRes = board_manager.getCanvasRes();
+    let w = canvasRes.width / imgRes.width;
+    return `${w}px ${w}px`
+  }
   
 
   
@@ -45,22 +53,24 @@ const Board = ({
         ref={canvas}
         boxShadow="lg"
         bgColor="white"
-        width={width}
-        height={height}
+        // width={width}
+        // height={height}
         onMouseDown={board_manager.canvasMouseDown}
         onMouseUp={board_manager.canvasMouseUp}
-        onClick={handleClick}
+        // onClick={handleClick}
         onMouseMove={board_manager.canvasMouseMove}
+        className="max-w-screen-lg "
         // onMouseOver={handleHover}
       />
       <Flex
+        ref={canvas_grid}
         width={width}
         height={height}
         bgColor="transparent"
         position="absolute"
         pointerEvents="none"
         backgroundImage="linear-gradient(to right, rgb(1,1,1) 0px, transparent 1px), linear-gradient(to bottom, rgb(1,1,1) 0px, transparent 1px);"
-        backgroundSize={"5px 5px"}
+        backgroundSize={get_grid_size()}
       >
         {/* <Flex
           position="absolute"

@@ -30,9 +30,9 @@ export class Point {
 		this.y = y;
 	}
 	equals = (point) => {
-		console.log("CHECKING EQUAL")
-		console.log(point)
-		console.log(this)
+		// console.log("CHECKING EQUAL")
+		// console.log(point)
+		// console.log(this)
 		return((this.x == point.x) && (this.y == point.y))
 	}
 }

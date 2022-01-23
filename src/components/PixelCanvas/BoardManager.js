@@ -3,6 +3,9 @@ import { colors, tools } from "./config";
 import { Point, circle, ellipse, line } from "./utils/Shapes";
 // import * as from "./lib/gif";
 
+
+
+
 export default class BoardManager {
   
   brushColor = colors[0];
@@ -14,6 +17,8 @@ export default class BoardManager {
   previous_point = null;
   canvas = null;
   ctx = null;
+  canvasGrid = null;
+
   lc = [];
   steps = [];
   redo_arr = [];
@@ -23,6 +28,25 @@ export default class BoardManager {
   constructor(canvas = null) {
     this.canvas = canvas;
     this.previous_point = new Point(undefined,undefined); //undefined, undefined
+  }
+
+  getCanvasRes(){
+    return this.canvasRes;
+  }
+
+  //https://stackoverflow.com/questions/4938346/canvas-width-and-height-in-html5
+  setCanvasRes(c_r){
+    this.canvasRes = c_r;
+    // canvas.height = c_r.height;
+    // canvas.width = c_r.width;
+  }
+
+  getImgRes(){
+    return this.imgRes;
+  }
+
+  setImgRes(c_r){
+    this.imgRes = c_r;
   }
 
   getCurTool(){
@@ -53,7 +77,6 @@ export default class BoardManager {
     console.log("SET CANVAS");
     this.canvas = canvas;
     this.setCtx(canvas.getContext("2d"));
-    console.log(canvas.getContext("2d"))
     this.ctx.fillStyle = "black";  //TODO:
     this.ctx.globalAlpha = 1;
     this.ctx.fillRect(0, 0, this.canvasRes.width, this.canvasRes.height);
@@ -62,6 +85,23 @@ export default class BoardManager {
   setCtx(ctx) {
     this.ctx = ctx;
   }
+  get_grid_size = () => {
+    let imgRes = this.getImgRes();
+    let canvasRes = this.getCanvasRes();
+    let w = canvasRes.width / imgRes.width;
+    return `${w}px ${w}px`
+  }
+  getCanvasGrid(){
+    return this.canvasGrid;
+  }
+
+  setCanvasGrid(el){
+    this.canvasGrid = el;
+  }
+
+  setCanvasGridSize(){
+    this.canvasGrid.style.backgroundSize = this.get_grid_size();
+  }
 
   drawPoint(x, y, count = false) {
     console.log(`DRAW POINT: ${x}, ${y}`)
@@ -69,15 +109,20 @@ export default class BoardManager {
     if (x >= 0 && x < this.imgRes.width && y >= 0 && y < this.imgRes.height) {
       console.log("VALID POINT")
       this.imgData[x][y] = this.brushColor;
-      console.log(this.imgData)
+      // console.log(this.imgData)
       console.log(this.ctx)
+      console.log(this.canvasRes)
       let scaleRatio = this.canvasRes.width / this.imgRes.width;
       console.log(`scaleRatio: ${scaleRatio}, ${x * scaleRatio}, ${y * scaleRatio}`)
       this.ctx.fillRect(
-        Math.floor(x * scaleRatio),
-        Math.floor(y * scaleRatio),
-        Math.floor(scaleRatio),
-        Math.floor(scaleRatio)
+        x * scaleRatio,
+        y * scaleRatio,
+        scaleRatio,
+        scaleRatio
+        // Math.floor(x * scaleRatio),
+        // Math.floor(y * scaleRatio),
+        // Math.floor(scaleRatio),
+        // Math.floor(scaleRatio)
       );
       if (
         !count &&
@@ -288,11 +333,13 @@ export default class BoardManager {
     if (this.isActive) {
       let imgRes = this.imgRes;
       let canvas = this.canvas;
+      console.log(this.canvas)
       var rect = canvas.getBoundingClientRect();
       var x = e.clientX - rect.left;
       var y = e.clientY - rect.top;
-      x = Math.floor((imgRes.width * x) / canvas.clientWidth);
-      y = Math.floor((imgRes.height * y) / canvas.clientHeight);
+      let scaleRatio =  this.imgRes.width / this.canvasRes.width;
+      x = Math.floor(scaleRatio * x);//Math.floor((imgRes.width * x) / canvas.clientWidth);
+      y = Math.floor(scaleRatio * y);//Math.floor((imgRes.height * y) / canvas.clientHeight);
       if (this.getCurTool()["name"] == "Pen") {
         var p = new Point(x, y);
         if (!p.equals(this.previous_point)) {
@@ -323,10 +370,12 @@ export default class BoardManager {
     var rect = this.canvas.getBoundingClientRect();
     var x = e.clientX - rect.left;
     var y = e.clientY - rect.top;
-    x = Math.floor(this.width * x / this.canvas.clientWidth);
-    y = Math.floor(this.height * y / this.canvas.clientHeight);
+    let scaleRatio =  this.imgRes.width / this.canvasRes.width;
+    x = Math.floor(scaleRatio * x);//Math.floor((imgRes.width * x) / canvas.clientWidth);
+    y = Math.floor(scaleRatio * y);//Math.floor((imgRes.height * y) / canvas.clientHeight);
     if (this.getCurTool()["name"] == "Fill") {
-      this.filler(x, y, this.data[x][y]);
+      console.log(`Filler: ${x}, ${y}`)
+      this.filler(x, y, this.imgData[x][y]);
     } else if (this.getCurTool()["name"] == "Eraser") {
       var temp = this.color;
       var tga = this.ctx.globalAlpha;
@@ -363,6 +412,22 @@ export default class BoardManager {
 
   newProject = () =>{
     localStorage.removeItem('pc-canvas-data');
+  }
+
+
+
+  handleWindowResize(){
+    console.log(this.canvas)
+    // let bounds = this.canvas.getBoundingClientRect();
+    // this.canvasRes.width = bounds.clientWidth;
+    // this.canvasRes.height = bounds.clientHeight;
+
+    this.canvas.width = this.canvasRes.width;
+    this.canvas.height = this.canvasRes.height;
+    this.canvasGrid.style.width = `${this.canvasRes.width}px`;
+    this.canvasGrid.style.height = `${this.canvasRes.height}px`;
+
+    this.setCanvasGridSize();
   }
 
 }
