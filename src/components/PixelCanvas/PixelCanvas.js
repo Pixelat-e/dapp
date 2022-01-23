@@ -28,12 +28,13 @@ const PixelCanvas = ({}) => {
   
   useScript("/lib/gif.js");
   useEffect(() => {
-    board_manager.setCanvas(canvas.current);
-    let ctx = canvas.getContext("2d");
+    let canvasEl = canvas.current;
+    board_manager.setCanvas(canvasEl);
+    let ctx = canvasEl.getContext("2d");
     board_manager.setCtx(ctx);
     ctx.fillStyle = "white";
     ctx.globalAlpha = 1;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, canvasEl.width, canvasEl.height);
     window.onmouseup = () => setActive(false);
   }, []);
 
@@ -47,7 +48,7 @@ const PixelCanvas = ({}) => {
   // setImgRes;
 
   function handleHover(e) {
-    if (this.active) {
+    if (active) {
       let imgRes = board_manager.getImgRes();
       var rect = canvas.getBoundingClientRect();
       var x = e.clientX - rect.left;

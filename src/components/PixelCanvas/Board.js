@@ -60,14 +60,14 @@ const Board = ({
         backgroundImage="linear-gradient(to right, rgb(1,1,1) 0px, transparent 1px), linear-gradient(to bottom, rgb(1,1,1) 0px, transparent 1px);"
         backgroundSize={"5px 5px"}
       >
-        <Flex
+        {/* <Flex
           position="absolute"
           left={100}
           top={100}
           width={20}
           height={20}
           bgColor="gray.100"
-        />
+        /> */}
       </Flex>
     </Flex>
   );
