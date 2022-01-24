@@ -350,7 +350,7 @@ export default class BoardManager {
     if (this.isActive) {
       let imgRes = this.imgRes;
       let canvas = this.canvas;
-      console.log(this.canvas)
+      // console.log(this.canvas)
       var rect = canvas.getBoundingClientRect();
       var x = e.clientX - rect.left;
       var y = e.clientY - rect.top;

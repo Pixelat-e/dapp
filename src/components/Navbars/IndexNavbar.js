@@ -2,7 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import {Button,useColorMode} from "@chakra-ui/react";
+import { Button, useColorMode } from "@chakra-ui/react";
 import Connect from "components/Connect/connect";
 
 // components
@@ -11,7 +11,8 @@ import IndexDropdown from "components/Dropdowns/IndexDropdown.js";
 
 export default function Navbar(props) {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
-  const colorMode = 'Dark';
+  const { colorMode, toggleColorMode } = useColorMode();
+  // const colorMode = "Dark";
   return (
     <>
       <nav className="top-0 fixed z-50 w-full flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg bg-white shadow">
@@ -42,14 +43,18 @@ export default function Navbar(props) {
               <li className="flex items-center">
                 <IndexDropdown />
               </li>
-              <li className="flex items-center">
-                <a
-                  className="hover:text-blueGray-500 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
-                  href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdemos.creative-tim.com%2Fnotus-react%2F%23%2F"
-                  target="_blank"
-                >
-                  <i className="text-black-400 fas fa-home text-lg leading-lg " /> <span className="text-lightBlue-600">&nbsp;Home</span>
-                  <span className="lg:hidden inline-block ml-2">Home</span>
+              <li
+                className="flex items-center cursor-pointer"
+                onClick={toggleColorMode}
+              >
+                <a className="select-none hover:text-blueGray-500 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold">
+                  {/* <i className="text-black-400 fas fa-home text-lg leading-lg " />{" "} */}
+                  <span className="text-lightBlue-600">
+                    Toggle {colorMode === "light" ? "Dark" : "Light"}
+                  </span>
+                  {/* <span className="lg:hidden inline-block ml-2">
+                    Toggle {colorMode === "light" ? "Dark" : "Light"}
+                  </span> */}
                 </a>
               </li>
 
@@ -59,7 +64,8 @@ export default function Navbar(props) {
                   href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fdemos.creative-tim.com%2Fnotus-react%2F%23%2F&text=Start%20your%20development%20with%20a%20Free%20Tailwind%20CSS%20and%20React%20UI%20Kit%20and%20Admin.%20Let%20Notus%20React%20amaze%20you%20with%20its%20cool%20features%20and%20build%20tools%20and%20get%20your%20project%20to%20a%20whole%20new%20level.%20"
                   target="_blank"
                 >
-                  <span className="text-lightBlue-600">About &nbsp;</span> <i className="text-lightBlue-600 fas fa-arrow-right text-lg leading-lg " />
+                  <span className="text-lightBlue-600">About &nbsp;</span>{" "}
+                  <i className="text-lightBlue-600 fas fa-arrow-right text-lg leading-lg " />
                   <span className="lg:hidden inline-block ml-2">About</span>
                 </a>
               </li>
@@ -70,12 +76,17 @@ export default function Navbar(props) {
                   href="https://github.com/creativetimofficial/notus-react?ref=nr-index-navbar"
                   target="_blank"
                 >
-                  <span className="text-lightBlue-600">How it works &nbsp;</span> <i className="text-lightBlue-600 fas fa-arrow-right text-lg leading-lg " />
-                  <span className="lg:hidden inline-block ml-2">How it works</span>
+                  <span className="text-lightBlue-600">
+                    How it works &nbsp;
+                  </span>{" "}
+                  <i className="text-lightBlue-600 fas fa-arrow-right text-lg leading-lg " />
+                  <span className="lg:hidden inline-block ml-2">
+                    How it works
+                  </span>
                 </a>
               </li>
               <li className="flex items-center">
-                <Connect/>
+                <Connect />
               </li>
             </ul>
           </div>

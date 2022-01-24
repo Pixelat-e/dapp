@@ -8,7 +8,7 @@ export default function NFT_Create() {
   return (
     <>
         <IndexNavbar fixed />
-        <PixelCanvas className="bg-slate-700"/>
+        <PixelCanvas/>
         <Footer />
     </>
   );
