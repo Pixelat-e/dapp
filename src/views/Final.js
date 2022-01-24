@@ -1,16 +1,22 @@
-import React from "react";
+import React,{useState} from "react";
 
 import Navbar from "components/Navbars/IndexNavbar.js";
 import Footer from "components/Footers/Footer.js";
 import Raccoon1 from "assets/raccoon_1.png"
 import Web3 from "web3";
 import { useLocation } from 'react-router-dom'
+import BoardManager from "../components/PixelCanvas/BoardManager";
 
 
 export default function Final({}) {
-  const location = useLocation()
+  let bm = new BoardManager();
+  const [imgUrl, setImgUrl] = useState(bm.getLocalImg());
+  // const location = useLocation()
 
-  const { name, cname, desc } = location.state;
+  let mintInfo = JSON.parse(localStorage.getItem('mint-info'));
+  console.log(mintInfo)
+  console.log(mintInfo["name"])
+  // const { name, cname, desc } = location.state;
 
   return (
     <>
@@ -21,7 +27,7 @@ export default function Final({}) {
             className="absolute top-0 w-full h-full bg-center bg-cover"
             style={{
               backgroundImage:
-                "url('https://media.istockphoto.com/vectors/pixel-art-cyberpunk-metropolis-background-vector-id1279840008?k=20&m=1279840008&s=612x612&w=0&h=M_E3GNssqAkdszL4-1TIsPohgnIJbhyqWShC5wuU7Tw=&auto=format&fit=crop&w=2710&q=80')",
+                `url(${imgUrl})`,
             }}
           >
             <span
@@ -76,7 +82,7 @@ export default function Final({}) {
                     <div className="relative">
                       <img
                         alt="..."
-                        src={Raccoon1}
+                        src={imgUrl}
                         className="shadow-xl h-auto align-middle border-none absolute  lg:-ml-16 max-w-210-px mt-12"
                       />
                     </div>
@@ -88,13 +94,16 @@ export default function Final({}) {
                         </h3>
                         <div className="text-left">
                           <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
-                            Name: {name}
+                            Name: {mintInfo["name"]}
                           </div>
                           <div className="mb-2 text-blueGray-600">
-                            Community: {cname}
+                            Community: {mintInfo["cname"]}
                           </div>
                           <div className="mb-2 text-blueGray-600">
-                            Description: {desc}
+                            Description: {mintInfo["description"]}
+                          </div>
+                          <div className="mb-2 text-blueGray-600">
+                            Token: {mintInfo["nft_token_id"]}
                           </div>
                           {/* <div className="mb-2 text-blueGray-600">
                             Contact Address: {}

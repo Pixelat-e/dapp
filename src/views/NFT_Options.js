@@ -90,6 +90,13 @@ export default function NFT_Options() {
     console.log(`metadataURI: ${metadataURI}`);
     const txt = await mintToken(metadataURI);
     console.log(`Minted token: ${txt}`);
+    
+    localStorage.setItem("mint-info", JSON.stringify(
+      {
+        ...meta,
+        nft_token_id: txt
+      }
+    ));
     setComplete(true);
     console.log(complete)
   };
