@@ -15,7 +15,7 @@ import Auth from "layouts/Auth.js";
 // views without layouts
 
 import Landing from "views/Landing.js";
-import Profile from "views/Profile.js";
+import Final from "views/Final.js";
 import Index from "views/Index.js";
 import NFT_Create from "views/NFT_Create.js";
 import NFT_Options from "views/NFT_Options";
@@ -37,7 +37,7 @@ ReactDOM.render(
           <Route path="/auth" component={Auth} />
           {/* add routes without layouts */}
           <Route path="/landing" exact component={Landing} />
-          <Route path="/profile" exact component={Profile} />
+          <Route path="/profile" exact component={Final} />
           <Route path="/pixel_canvas" exact component={NFT_Create} />
           <Route path="/options" exact component={NFT_Options} />
           <Route path="/" exact component={Index} />

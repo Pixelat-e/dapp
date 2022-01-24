@@ -11,8 +11,7 @@ import IndexDropdown from "components/Dropdowns/IndexDropdown.js";
 
 export default function Navbar(props) {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
-  const { colorMode, toggleColorMode } = useColorMode();
-  // const colorMode = "Dark";
+  const colorMode = "Dark";
   return (
     <>
       <nav className="top-0 fixed z-50 w-full flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg bg-white shadow">
@@ -43,20 +42,7 @@ export default function Navbar(props) {
               <li className="flex items-center">
                 <IndexDropdown />
               </li>
-              <li
-                className="flex items-center cursor-pointer"
-                onClick={toggleColorMode}
-              >
-                <a className="select-none hover:text-blueGray-500 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold">
-                  {/* <i className="text-black-400 fas fa-home text-lg leading-lg " />{" "} */}
-                  <span className="text-lightBlue-600">
-                    Toggle {colorMode === "light" ? "Dark" : "Light"}
-                  </span>
-                  {/* <span className="lg:hidden inline-block ml-2">
-                    Toggle {colorMode === "light" ? "Dark" : "Light"}
-                  </span> */}
-                </a>
-              </li>
+
 
               <li className="flex items-center">
                 <a
