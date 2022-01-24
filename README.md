@@ -22,22 +22,10 @@ PIXELATE is Free and Open Source. It written using Notus React, tailwindCSS and 
 - Click "Next" when you are happy with your NFT.
 - Fill in the fields and you are almost done.
 <img width="1273" alt="image" src="https://user-images.githubusercontent.com/69447074/150820721-001dc23a-6b65-47f2-8114-1581b7a485b3.png">
-- Click on "Finish" and pay the gas fees.
+- Click on "Finish" and pay the gas fees. Please make sure your account has Polygon MATIC testnet tokens.
 <img width="1277" alt="image" src="https://user-images.githubusercontent.com/69447074/150821162-dc532ec1-e60a-4c06-9882-ee08841b11dc.png">
-
-
-## Table of Contents
-
-* [Versions](#versions)
-* [Documentation](#documentation)
-* [Quick Start](#quick-start)
-* [Files and folders](#files-and-folders)
-* [Browser Support](#browser-support)
-* [Reporting Issues](#reporting-issues)
-* [Licensing](#licensing)
-* [Useful Links](#useful-links)
-* [Resources](#resources)
-
+- The page is now deployed on Openseas testnet using Polygon MATIC.
+- The page can be viewed in Openseas under the user's account which is linked to the user's MetaMask wallet. From here the user can sell and auction his NFT on the wider marketplace. (Due to a bug the NFT image does not show up on openseas)
 
 
 ## Browser Support
