@@ -91,6 +91,7 @@ export default function NFT_Options() {
     const txt = await mintToken(metadataURI);
     console.log(`Minted token: ${txt}`);
     setComplete(true);
+    console.log(complete)
   };
 
   const mintToken = async (_uri) => {
