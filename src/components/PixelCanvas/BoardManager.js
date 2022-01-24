@@ -321,6 +321,18 @@ export default class BoardManager {
     return null;
   }
 
+  // convertUrlToJpg = (url) => {
+  //   return 
+  // }
+
+  urltoFile = async (url, filename, mimeType) =>{
+    mimeType = mimeType || (url.match(/^data:([^;]+);/)||'')[1];
+    return await (fetch(url)
+        .then(function(res){return res.arrayBuffer();})
+        .then(function(buf){return new File([buf], filename, {type:mimeType});})
+    );
+  }
+
   // In case you were working halfway and something bad happens
   restoreBoardCache = () => {
     let canvasData = localStorage.getItem('pc-canvas-data');
