@@ -5,6 +5,22 @@ import Footer from "components/Footers/Footer.js";
 
 
 import BoardManager from "../components/PixelCanvas/BoardManager"; 
+const uploadNFT = async () => {
+  //moralis config
+  const Moralis = require("moralis/node");
+  const SERVER_URL = "https://izaeqmus36qm.usemoralis.com:2053/server";
+  const APP_ID = "RcQ2ZZxeW4ZUFDYFK9hIi6QZHYE3iBl6M2HgjtU8";
+  const MASTER_KEY = "gahCQC0brERXzGssFIej2dkW2bv8QsYUaCAauni5";
+  var img = new Image(); // Create new img element
+  img.src = "../assets/raccoon_1.png"; // Set source path
+
+  Moralis.start({ SERVER_URL, APP_ID, MASTER_KEY });
+
+  // Save file input to IPFS
+  const file = new Moralis.File("test", img);
+  await file.saveIPFS();
+  console.log(file.ipfs(), file.hash());
+};
 
 export default function NFT_Options() {
 
@@ -72,6 +88,7 @@ export default function NFT_Options() {
                 <button
                   class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
                   type="button"
+                  onClick={uploadNFT}
                 >
                   FINISH
                 </button>
