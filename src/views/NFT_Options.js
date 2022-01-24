@@ -4,6 +4,7 @@ import Navbar from "components/Navbars/IndexNavbar";
 import Footer from "components/Footers/Footer.js";
 import Web3 from "web3";
 import BoardManager from "../components/PixelCanvas/BoardManager";
+import { Link } from "react-router-dom";
 
 const Moralis = require("moralis");
 const SERVER_URL = "https://izaeqmus36qm.usemoralis.com:2053/server";
@@ -14,9 +15,6 @@ const nft_contract_address = "0x6ce167e780A30FC34e43a58D0DF957197d374005";
 const web3 = new Web3(window.ethereum);
 
 
-
-
-
 export default function NFT_Options() {
   let bm = new BoardManager();
   const [imgUrl, setImgUrl] = useState(bm.getLocalImg());
@@ -25,6 +23,7 @@ export default function NFT_Options() {
     cname: "",
     description: "",
   });
+  const [complete, setComplete] = useState(false);
 
   const handleInputChange = (e) => {
     // console.log(e);
@@ -91,6 +90,7 @@ export default function NFT_Options() {
     console.log(`metadataURI: ${metadataURI}`);
     const txt = await mintToken(metadataURI);
     console.log(`Minted token: ${txt}`);
+    setComplete(true);
   };
 
   const mintToken = async (_uri) => {
@@ -239,13 +239,24 @@ export default function NFT_Options() {
             <div class="md:flex md:items-center p-4">
               <div class="md:w-1/3"></div>
               <div class="md:w-2/3">
-                <button
+              { !complete && 
+              <button
                   class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
                   type="button"
                   onClick={uploadNFT}
                 >
                   FINISH
+                </button>}
+
+                {complete && 
+                <Link to="/final" state={{ name: meta.name, cname: meta.cname, desc: meta.description }} >
+                <button
+                  class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                  type="button">
+                  NEXT PAGE 
                 </button>
+                </Link>
+                }
               </div>
             </div>
           </form>

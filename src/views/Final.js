@@ -3,8 +3,15 @@ import React from "react";
 import Navbar from "components/Navbars/IndexNavbar.js";
 import Footer from "components/Footers/Footer.js";
 import Raccoon1 from "assets/raccoon_1.png"
+import Web3 from "web3";
+import { useLocation } from 'react-router-dom'
 
-export default function Final() {
+
+export default function Final({}) {
+  const location = useLocation()
+
+  const { name, cname, desc } = location.state;
+
   return (
     <>
       <Navbar transparent />
@@ -81,15 +88,15 @@ export default function Final() {
                         </h3>
                         <div className="text-left">
                           <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
-                            Name: {}
+                            Name: {name}
                           </div>
                           <div className="mb-2 text-blueGray-600">
-                            Community: {}
+                            Community: {cname}
                           </div>
                           <div className="mb-2 text-blueGray-600">
-                            Description: {}
+                            Description: {desc}
                           </div>
-                          <div className="mb-2 text-blueGray-600">
+                          {/* <div className="mb-2 text-blueGray-600">
                             Contact Address: {}
                           </div>
                           <div className="mb-2 text-blueGray-600">
@@ -97,7 +104,7 @@ export default function Final() {
                           </div>
                           <div className="mb-2 text-blueGray-600">
                             Chain: {}
-                          </div>
+                          </div> */}
                         </div>
                     </div>
                   </div>
