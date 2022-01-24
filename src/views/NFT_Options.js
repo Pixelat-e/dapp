@@ -1,31 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Navbar from "components/Navbars/IndexNavbar";
 import Footer from "components/Footers/Footer.js";
 
-
-import BoardManager from "../components/PixelCanvas/BoardManager"; 
-const uploadNFT = async () => {
-  //moralis config
-  const Moralis = require("moralis/node");
-  const SERVER_URL = "https://izaeqmus36qm.usemoralis.com:2053/server";
-  const APP_ID = "RcQ2ZZxeW4ZUFDYFK9hIi6QZHYE3iBl6M2HgjtU8";
-  const MASTER_KEY = "gahCQC0brERXzGssFIej2dkW2bv8QsYUaCAauni5";
-  var img = new Image(); // Create new img element
-  img.src = "../assets/raccoon_1.png"; // Set source path
-
-  Moralis.start({ SERVER_URL, APP_ID, MASTER_KEY });
-
-  // Save file input to IPFS
-  const file = new Moralis.File("test", img);
-  await file.saveIPFS();
-  console.log(file.ipfs(), file.hash());
-};
+import BoardManager from "../components/PixelCanvas/BoardManager";
 
 export default function NFT_Options() {
-
   let bm = new BoardManager();
+  const [imgUrl, setImgUrl] = useState(bm.getLocalImg());
 
+  const uploadNFT = async () => {
+    //moralis config
+    const Moralis = require("moralis");
+    const SERVER_URL = "https://izaeqmus36qm.usemoralis.com:2053/server";
+    const APP_ID = "RcQ2ZZxeW4ZUFDYFK9hIi6QZHYE3iBl6M2HgjtU8";
+    const MASTER_KEY = "gahCQC0brERXzGssFIej2dkW2bv8QsYUaCAauni5";
+    // var img = new Image(); // Create new img element
+    // img.setAttribute('src', imgUrl);
+    // img.addEventListener("load", async () => {
+    //   Moralis.start({ SERVER_URL, APP_ID, MASTER_KEY });
+
+    //   // Save file input to IPFS
+    //   const file = new Moralis.File("test", img);
+    //   await file.saveIPFS();
+    //   console.log(file.ipfs(), file.hash());
+    // });
+    // console.log(`imgUrl: ${imgUrl.length()}`)
+    
+
+    Moralis.start({
+      serverUrl: SERVER_URL,
+      appId: APP_ID,
+      masterKey: MASTER_KEY,
+    });
+    
+    await Moralis.Web3.authenticate().then((user)=>{
+      console.log(user)
+    })
+    // Save file input to IPFS
+    const file = new Moralis.File("test.img", {base64 :imgUrl});
+    await file.saveIPFS({useMasterKey:true});
+    console.log(file.ipfs(), file.hash());
+    return file.ipfs();
+    // img.src = "../assets/raccoon_1.png"; // Set source path
+  };
   return (
     <>
       <Navbar transparent />
