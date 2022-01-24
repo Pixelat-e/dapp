@@ -1,82 +1,29 @@
-# Notus React <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fdemos.creative-tim.com%2Fnotus-react%2F%23%2F&text=Start%20your%20development%20with%20a%20Free%20Tailwind%20CSS%20and%20React%20UI%20Kit%20and%20Admin.%20Let%20Notus%20React%20amaze%20you%20with%20its%20cool%20features%20and%20build%20tools%20and%20get%20your%20project%20to%20a%20whole%20new%20level.%20" target="_blank">![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)</a>
+# PIXELATE
 
-![version](https://img.shields.io/badge/version-1.1.0-blue.svg) ![license](https://img.shields.io/badge/license-MIT-blue.svg) <a href="https://github.com/creativetimofficial/notus-react/issues?q=is%3Aopen+is%3Aissue" target="_blank">![GitHub issues open](https://img.shields.io/github/issues/creativetimofficial/notus-react.svg)</a> <a href="https://github.com/creativetimofficial/notus-react/issues?q=is%3Aissue+is%3Aclosed" target="_blank">![GitHub issues closed](https://img.shields.io/github/issues-closed-raw/creativetimofficial/notus-react.svg)</a> <a href="https://gitter.im/creative-tim-general/Lobby" target="_blank">![Join the chat at https://gitter.im/NIT-dgp/General](https://badges.gitter.im/NIT-dgp/General.svg)</a> <a href="https://discord.gg/E4aHAQy" target="_blank">![Chat](https://img.shields.io/badge/chat-on%20discord-7289da.svg)</a>
+<img width="1261" alt="image" src="https://user-images.githubusercontent.com/69447074/150818733-a41903cf-ecc2-4a8d-9aef-6243407e8db6.png">
 
-![Notus React](https://github.com/creativetimofficial/public-assets/blob/master/notus-react/notus-react.jpg?raw=true)
+### A beautiful and easy to use UI for NFT creators.
 
-### A beautiful UI Kit and Admin for Tailwind CSS and React.
+An easy all-in-one platform for founders without technical skills to create their NFT community, while allowing members to freely customize their personal NFT.
 
-Start your development with a Free Tailwind CSS and React UI Kit and Admin. Let Notus React amaze you with its cool features and build tools and get your project to a whole new level.
+PIXELATE is Free and Open Source. It written using Notus React, tailwindCSS and Solidity.
 
-Notus React is Free and Open Source. It features multiple HTML and React elements and it comes with dynamic components for React.
+![PIXELATE](https://user-images.githubusercontent.com/69447074/150817999-cbffd02a-c58c-4f3f-9707-d7695712dd93.png)
 
-It is based on [Tailwind Starter Kit](https://www.creative-tim.com/learning-lab/tailwind-starter-kit/presentation?ref=nr-github-readme) by Creative Tim, and it is build with both presentation pages, and pages for an admin dashboard.
-
-Speed up your web development with a beautiful product made by <a href="https://creative-tim.com/" target="_blank">Creative Tim </a>.
-If you like bright and fresh colors, you will love this Free Tailwind CSS Template! It features a huge number of components that can help you create amazing websites.
 
 ### Get Started
 
-- Install NodeJS **LTS** version from <a href="https://nodejs.org/en/?ref=creativetim">NodeJs Official Page</a>
-- Download the product on this page
-- Unzip the downloaded file to a folder in your computer
-- Open Terminal
-- Go to your file project (where you’ve unzipped the product)
-- (If you are on a linux based terminal) Simply run `npm run install:clean`
-- (If not) Run in terminal `npm install`
-- (If not) Run in terminal `npm run build:tailwind` (each time you add a new class, a class that does not exist in `src/assets/styles/tailwind.css`, you will need to run this command)
-- (If not) Run in terminal `npm start`
-- Navigate to https://localhost:3000
-- Check more about [Tailwind CSS](https://tailwindcss.com/?ref=creativetim)
-
-### Pages
-
-If you want to get inspiration or just show something directly to your clients,
-you can jump start your development with our pre-built example pages. You will be able
-to quickly set up the basic structure for your web project.
-
-Here are all the page from the project:
-- [Presentation](https://demos.creative-tim.com/notus-react/?ref=nr-github-readme)
-- Admin Samples
-  - [Dashboard](https://demos.creative-tim.com/notus-react/admin/dashboard?ref=nr-github-readme)
-  - [Settings](https://demos.creative-tim.com/notus-react/admin/settings?ref=nr-github-readme)
-  - [Tables](https://demos.creative-tim.com/notus-react/admin/tables?ref=nr-github-readme)
-  - [Maps](https://demos.creative-tim.com/notus-react/admin/maps?ref=nr-github-readme)
-- Authentication Samples
-  - [Login](https://demos.creative-tim.com/notus-react/auth/login?ref=nr-github-readme)
-  - [Register](https://demos.creative-tim.com/notus-react/auth/register?ref=nr-github-readme)
-- Presentation Samples
-  - [Landing](https://demos.creative-tim.com/notus-react/landing?ref=nr-github-readme)
-  - [Profile](https://demos.creative-tim.com/notus-react/profile?ref=nr-github-readme)
-
-
-### Fully Coded Components
-
-Notus React is built with over frontend 120 components, giving you the freedom of choosing and combining. All components can take variations in colors, that you can easily modify using Tailwind CSS classes (NOTE: each time you add a new class, a class that does not exist in `src/assets/styles/tailwind.css`, you will need to compile again tailwind).
-
-You will save a lot of time going from prototyping to full-functional code, because all elements are implemented.
-This Free Tailwind CSS Template is coming with prebuilt examples, so the development process is seamless, switching from our pages to the real website is very easy to be done.
-
-Every element has multiple states for colors, styles, hover, focus, that you can easily access and use.
-
-
-### CSS Components
-
-Notus React comes with 120 Fully Coded CSS elements, such as [Alerts](https://www.creative-tim.com/learning-lab/tailwind/react/alerts/notus?ref=nr-github-readme), [Buttons](https://www.creative-tim.com/learning-lab/tailwind/react/buttons/notus?ref=nr-github-readme), [Inputs](https://www.creative-tim.com/learning-lab/tailwind/react/inputs/notus?ref=nr-github-readme) and many more.
-
-Please [check all of them here](https://www.creative-tim.com/learning-lab/tailwind/react/alerts/notus?ref=nr-github-readme).
-
-### React Components
-
-We also feature the following 18 dynamic components:
-- [Alerts](https://www.creative-tim.com/learning-lab/tailwind/react/alerts/notus?ref=nr-github-readme)
-- [Popper for Menus](https://www.creative-tim.com/learning-lab/tailwind/react/dropdowns/notus?ref=nr-github-readme)
-- [Menus](https://www.creative-tim.com/learning-lab/tailwind/react/menus/notus?ref=nr-github-readme)
-- [Modals](https://www.creative-tim.com/learning-lab/tailwind/react/modals/notus?ref=nr-github-readme)
-- [Navbars](https://www.creative-tim.com/learning-lab/tailwind/react/navbar/notus?ref=nr-github-readme)
-- [Popper for popover content](https://www.creative-tim.com/learning-lab/tailwind/react/popovers/notus?ref=nr-github-readme)
-- [Tabs](https://www.creative-tim.com/learning-lab/tailwind/react/tabs/notus?ref=nr-github-readme)
-- [Popper for tooltips content](https://www.creative-tim.com/learning-lab/tailwind/react/tooltips/notus?ref=nr-github-readme)
+- Navigate to https://wagmi-449b9.web.app/
+- Connect your MetaMask account using the "CONNECT WALLET" option on the top right of the screen.
+ <img width="1280" alt="image" src="https://user-images.githubusercontent.com/69447074/150819689-c565a703-0229-4467-84c2-49bfb507dc73.png">
+- Click on "Get Started" to go to the canvas.
+<img width="1271" alt="image" src="https://user-images.githubusercontent.com/69447074/150819981-596682ab-7258-48a5-929b-40fa3bb51559.png">
+- Create your fully customisable NFT using the paint tools.
+- Click "Next" when you are happy with your NFT.
+- Fill in the fields and you are almost done.
+<img width="1273" alt="image" src="https://user-images.githubusercontent.com/69447074/150820721-001dc23a-6b65-47f2-8114-1581b7a485b3.png">
+- Click on "Finish" and pay the gas fees.
+<img width="1277" alt="image" src="https://user-images.githubusercontent.com/69447074/150821162-dc532ec1-e60a-4c06-9882-ee08841b11dc.png">
 
 
 ## Table of Contents
@@ -219,16 +166,6 @@ We use GitHub Issues as the official bug tracker for the Notus React. Here are s
 - Check our Bundles <a href="https://www.creative-tim.com/bundles?ref=nr-readme" target="_blank">here</a>
 - Check our awesome builder <a href="https://www.creative-tim.com/builder/argon?ref=nr-readme" target="_blank">here</a>
 - Check Tailwind Starter Kit, the project behind this product <a href="https://www.creative-tim.com/learning-lab/tailwind-starter-kit/presentation?ref=nr-readme" target="_blank">here</a>
-
-### Social Media
-
-Twitter: <a href="https://twitter.com/CreativeTim" target="_blank">https://twitter.com/CreativeTim</a>
-
-Facebook: <a href="https://www.facebook.com/CreativeTim" target="_blank">https://www.facebook.com/CreativeTim</a>
-
-Dribbble: <a href="https://dribbble.com/creativetim" target="_blank">https://dribbble.com/creativetim</a>
-
-Instagram: <a href="https://www.instagram.com/creativetimofficial/" target="_blank">https://www.instagram.com/creativetimofficial/</a>
 
 
 ## Resources
