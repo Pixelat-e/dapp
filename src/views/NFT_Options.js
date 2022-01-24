@@ -10,24 +10,17 @@ const Moralis = require("moralis");
 const SERVER_URL = "https://izaeqmus36qm.usemoralis.com:2053/server";
 const APP_ID = "RcQ2ZZxeW4ZUFDYFK9hIi6QZHYE3iBl6M2HgjtU8";
 const MASTER_KEY = "gahCQC0brERXzGssFIej2dkW2bv8QsYUaCAauni5";
-const nft_contract_address = 0xDC80F8AcDB95145814381638BfbedF518deb177c;
+const nft_contract_address = "0x351bbee7C6E9268A1BF741B098448477E08A0a53"; //0xDC80F8AcDB95145814381638BfbedF518deb177c;
 let web3 = new ethers.providers.Web3Provider(window.ethereum);
-
 
 export default function NFT_Options() {
   let bm = new BoardManager();
   const [imgUrl, setImgUrl] = useState(bm.getLocalImg());
   const [meta, setMeta] = useState({
-    name:"",
+    name: "",
     cname: "",
-    description:""
+    description: "",
   });
-
-
-
-  
-
-
 
   const handleInputChange = (e) => {
     // console.log(e);
@@ -42,23 +35,25 @@ export default function NFT_Options() {
   };
 
   const uploadImg = async () => {
-    const file = new Moralis.File("test.img", {base64 :imgUrl});
-    await file.saveIPFS({useMasterKey:true});
+    const file = new Moralis.File("test.img", { base64: imgUrl });
+    await file.saveIPFS({ useMasterKey: true });
     console.log(file.ipfs(), file.hash());
     return file;
-  }
+  };
 
   const uploadMeta = async () => {
     const metadata = meta;
-    console.log(meta)
-    const metadataFile = new Moralis.File("metadata.json", {base64 : btoa(JSON.stringify(metadata))});
+    console.log(meta);
+    const metadataFile = new Moralis.File("metadata.json", {
+      base64: btoa(JSON.stringify(metadata)),
+    });
     await metadataFile.saveIPFS();
     return metadataFile;
-  }
+  };
 
   const uploadNFT = async () => {
     //moralis config
-    
+
     // var img = new Image(); // Create new img element
     // img.setAttribute('src', imgUrl);
     // img.addEventListener("load", async () => {
@@ -70,35 +65,68 @@ export default function NFT_Options() {
     //   console.log(file.ipfs(), file.hash());
     // });
     // console.log(`imgUrl: ${imgUrl.length()}`)
-    
 
     Moralis.start({
       serverUrl: SERVER_URL,
       appId: APP_ID,
       masterKey: MASTER_KEY,
     });
-    
-    await Moralis.Web3.authenticate().then((user)=>{
-      console.log(user)
-    })
+
+    await Moralis.Web3.authenticate().then((user) => {
+      console.log(user);
+    });
     // Save file input to IPFS
     let uploadedImg = uploadImg();
     let uploadedMeta = await uploadMeta();
     const metadataURI = uploadedMeta.ipfs();
-    console.log(`metadataURI: ${metadataURI}`)
+    console.log(`metadataURI: ${metadataURI}`);
     const txt = await mintToken(metadataURI);
-    console.log(`Minted token: ${txt}`)
+    console.log(`Minted token: ${txt}`);
   };
-
 
   const mintToken = async (_uri) => {
     let ethereum = window.ethereum;
+    console.log(`ethereum.selectedAddress: ${ethereum.selectedAddress}`)
+    // "function mintToken(string tokenURI)"
     let ABI = [
-      "function mintToken(string tokenURI)"
-    ]
+      {
+        name: "mintToken",
+        type: "function",
+        inputs: [
+          {
+            type: "string",
+            name: "tokenURI",
+          },
+        ],
+      },
+    ];
     let iface = new ethers.utils.Interface(ABI);
-    
+    iface.encodeFunctionData("mintToken",[
+      _uri,
+    ])
 
+    ABI = [
+      {
+        name: "eth_sendTransaction",
+        type: "function",
+        inputs: [
+          {
+            type: "string",
+            name: "to"
+          },
+          {
+            type: "string",
+            name: "from"
+          },
+          {
+            type: "function",
+            name: "data"
+          }
+        ]
+      }
+    ]
+
+    let contract = new ethers.Contract(nft_contract_address, ABI, web3);  //https://github.com/ethers-io/ethers.js/issues/478
     // const encodedFunction = web3.eth.abi.encodeFunctionCall({
     //   name: "mintToken",
     //   type: "function",
@@ -107,7 +135,7 @@ export default function NFT_Options() {
     //     name: 'tokenURI'
     //     }]
     // }, [_uri]);
-  
+
     // const transactionParameters = {
     //   to: nft_contract_address,
     //   from: ethereum.selectedAddress,
@@ -117,8 +145,9 @@ export default function NFT_Options() {
     //   method: 'eth_sendTransaction',
     //   params: [transactionParameters]
     // });
-    return txt
-  }
+    contract.eth_sendTransaction(nft_contract_address,ethereum.selectedAddress,iface.getFunction())
+    return await contract.getValue();
+  };
 
   return (
     <>
