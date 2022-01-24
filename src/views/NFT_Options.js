@@ -1,366 +1,19 @@
 import React, { useState } from "react";
 import { ethers } from "ethers";
-
 import Navbar from "components/Navbars/IndexNavbar";
 import Footer from "components/Footers/Footer.js";
-
+import Web3 from "web3";
 import BoardManager from "../components/PixelCanvas/BoardManager";
 
 const Moralis = require("moralis");
 const SERVER_URL = "https://izaeqmus36qm.usemoralis.com:2053/server";
 const APP_ID = "RcQ2ZZxeW4ZUFDYFK9hIi6QZHYE3iBl6M2HgjtU8";
 const MASTER_KEY = "gahCQC0brERXzGssFIej2dkW2bv8QsYUaCAauni5";
-const nft_contract_address = "0x351bbee7C6E9268A1BF741B098448477E08A0a53"; //0xDC80F8AcDB95145814381638BfbedF518deb177c;
-let web3 = new ethers.providers.Web3Provider(window.ethereum);
+//Polygon MATIC testnet
+const nft_contract_address = "0x6ce167e780A30FC34e43a58D0DF957197d374005"; 
+const web3 = new Web3(window.ethereum);
 
-let NFT_ABI = [
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "name_",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "symbol_",
-				"type": "string"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "owner",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "approved",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "Approval",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "owner",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "operator",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "bool",
-				"name": "approved",
-				"type": "bool"
-			}
-		],
-		"name": "ApprovalForAll",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "Transfer",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "approve",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "owner",
-				"type": "address"
-			}
-		],
-		"name": "balanceOf",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "getApproved",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "owner",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "operator",
-				"type": "address"
-			}
-		],
-		"name": "isApprovedForAll",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "name",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "ownerOf",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "safeTransferFrom",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "bytes",
-				"name": "_data",
-				"type": "bytes"
-			}
-		],
-		"name": "safeTransferFrom",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "operator",
-				"type": "address"
-			},
-			{
-				"internalType": "bool",
-				"name": "approved",
-				"type": "bool"
-			}
-		],
-		"name": "setApprovalForAll",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "bytes4",
-				"name": "interfaceId",
-				"type": "bytes4"
-			}
-		],
-		"name": "supportsInterface",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "symbol",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "tokenURI",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "transferFrom",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	}
-]
+
 
 
 
@@ -386,7 +39,11 @@ export default function NFT_Options() {
   };
 
   const uploadImg = async () => {
-    const file = new Moralis.File("test.img", { base64: imgUrl });
+    // const file = new Moralis.File("test.img", { base64: imgUrl });
+
+    // let imgFile = await bm.urltoFile(imgUrl,`${meta.name}.png`);
+
+    const file = new Moralis.File(`${meta.name}.png`, { base64: imgUrl });
     await file.saveIPFS({ useMasterKey: true });
     console.log(file.ipfs(), file.hash());
     return file;
@@ -477,7 +134,7 @@ export default function NFT_Options() {
     //   }
     // ]
 
-    let contract = new ethers.Contract(nft_contract_address, NFT_ABI, web3);  //https://github.com/ethers-io/ethers.js/issues/478
+    // let contract = new ethers.Contract(nft_contract_address, NFT_ABI, web3);  //https://github.com/ethers-io/ethers.js/issues/478
     // const encodedFunction = web3.eth.abi.encodeFunctionCall({
     //   name: "mintToken",
     //   type: "function",
@@ -486,18 +143,31 @@ export default function NFT_Options() {
     //     name: 'tokenURI'
     //     }]
     // }, [_uri]);
+  const encodedFunction = web3.eth.abi.encodeFunctionCall(
+    {
+      name: "mintToken",
+      type: "function",
+      inputs: [
+        {
+          type: "string",
+          name: "tokenURI",
+        },
+      ],
+    },
+    [_uri]
+  );
 
-    // const transactionParameters = {
-    //   to: nft_contract_address,
-    //   from: ethereum.selectedAddress,
-    //   data: encodedFunction
-    // };
-    // const txt = await ethereum.request({
-    //   method: 'eth_sendTransaction',
-    //   params: [transactionParameters]
-    // });
-    contract.eth_sendTransaction(nft_contract_address,ethereum.selectedAddress,iface.getFunction())
-    return await contract.getValue();
+  // let ethereum = window.ethereum;
+  const transactionParameters = {
+    to: nft_contract_address,
+    from: ethereum.selectedAddress,
+    data: encodedFunction,
+  };
+  const txt = await ethereum.request({
+    method: "eth_sendTransaction",
+    params: [transactionParameters],
+  });
+  return txt;
   };
 
   return (
