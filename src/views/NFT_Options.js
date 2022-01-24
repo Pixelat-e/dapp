@@ -1,20 +1,64 @@
 import React, { useState } from "react";
+import { ethers } from "ethers";
 
 import Navbar from "components/Navbars/IndexNavbar";
 import Footer from "components/Footers/Footer.js";
 
 import BoardManager from "../components/PixelCanvas/BoardManager";
 
+const Moralis = require("moralis");
+const SERVER_URL = "https://izaeqmus36qm.usemoralis.com:2053/server";
+const APP_ID = "RcQ2ZZxeW4ZUFDYFK9hIi6QZHYE3iBl6M2HgjtU8";
+const MASTER_KEY = "gahCQC0brERXzGssFIej2dkW2bv8QsYUaCAauni5";
+const nft_contract_address = 0xDC80F8AcDB95145814381638BfbedF518deb177c;
+let web3 = new ethers.providers.Web3Provider(window.ethereum);
+
+
 export default function NFT_Options() {
   let bm = new BoardManager();
   const [imgUrl, setImgUrl] = useState(bm.getLocalImg());
+  const [meta, setMeta] = useState({
+    name:"",
+    cname: "",
+    description:""
+  });
+
+
+
+  
+
+
+
+  const handleInputChange = (e) => {
+    // console.log(e);
+    let newVal = e.target.value;
+    // if (e.target.name == "width"){
+
+    // }
+    setMeta({
+      ...meta,
+      [e.target.name]: newVal,
+    });
+  };
+
+  const uploadImg = async () => {
+    const file = new Moralis.File("test.img", {base64 :imgUrl});
+    await file.saveIPFS({useMasterKey:true});
+    console.log(file.ipfs(), file.hash());
+    return file;
+  }
+
+  const uploadMeta = async () => {
+    const metadata = meta;
+    console.log(meta)
+    const metadataFile = new Moralis.File("metadata.json", {base64 : btoa(JSON.stringify(metadata))});
+    await metadataFile.saveIPFS();
+    return metadataFile;
+  }
 
   const uploadNFT = async () => {
     //moralis config
-    const Moralis = require("moralis");
-    const SERVER_URL = "https://izaeqmus36qm.usemoralis.com:2053/server";
-    const APP_ID = "RcQ2ZZxeW4ZUFDYFK9hIi6QZHYE3iBl6M2HgjtU8";
-    const MASTER_KEY = "gahCQC0brERXzGssFIej2dkW2bv8QsYUaCAauni5";
+    
     // var img = new Image(); // Create new img element
     // img.setAttribute('src', imgUrl);
     // img.addEventListener("load", async () => {
@@ -38,12 +82,44 @@ export default function NFT_Options() {
       console.log(user)
     })
     // Save file input to IPFS
-    const file = new Moralis.File("test.img", {base64 :imgUrl});
-    await file.saveIPFS({useMasterKey:true});
-    console.log(file.ipfs(), file.hash());
-    return file.ipfs();
-    // img.src = "../assets/raccoon_1.png"; // Set source path
+    let uploadedImg = uploadImg();
+    let uploadedMeta = await uploadMeta();
+    const metadataURI = uploadedMeta.ipfs();
+    console.log(`metadataURI: ${metadataURI}`)
+    const txt = await mintToken(metadataURI);
+    console.log(`Minted token: ${txt}`)
   };
+
+
+  const mintToken = async (_uri) => {
+    let ethereum = window.ethereum;
+    let ABI = [
+      "function mintToken(string tokenURI)"
+    ]
+    let iface = new ethers.utils.Interface(ABI);
+    
+
+    // const encodedFunction = web3.eth.abi.encodeFunctionCall({
+    //   name: "mintToken",
+    //   type: "function",
+    //   inputs: [{
+    //     type: 'string',
+    //     name: 'tokenURI'
+    //     }]
+    // }, [_uri]);
+  
+    // const transactionParameters = {
+    //   to: nft_contract_address,
+    //   from: ethereum.selectedAddress,
+    //   data: encodedFunction
+    // };
+    // const txt = await ethereum.request({
+    //   method: 'eth_sendTransaction',
+    //   params: [transactionParameters]
+    // });
+    return txt
+  }
+
   return (
     <>
       <Navbar transparent />
@@ -67,8 +143,11 @@ export default function NFT_Options() {
               <input
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="name"
+                name="name"
                 type="text"
+                value={meta.name}
                 placeholder="Enter text here"
+                onChange={handleInputChange}
               />
             </div>
             <div class="p-4">
@@ -81,8 +160,11 @@ export default function NFT_Options() {
               <input
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="cname"
+                name="cname"
+                value={meta.cname}
                 type="text"
                 placeholder="Enter text here"
+                onChange={handleInputChange}
               />
             </div>
             <div class="p-4">
@@ -95,8 +177,11 @@ export default function NFT_Options() {
               <input
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                 id="description"
+                name="description"
+                value={meta.description}
                 type="text"
                 placeholder="Enter text here"
+                onChange={handleInputChange}
               />
             </div>
 
