@@ -16,16 +16,21 @@ PIXELATE is Free and Open Source. It written using Notus React, tailwindCSS and 
 - Navigate to https://wagmi-449b9.web.app/
 - Connect your MetaMask account using the "CONNECT WALLET" option on the top right of the screen.
 <img width="1280" alt="image" src="https://user-images.githubusercontent.com/69447074/150819689-c565a703-0229-4467-84c2-49bfb507dc73.png">
+
 - Click on "Get Started" to go to the canvas.
 <img width="1271" alt="image" src="https://user-images.githubusercontent.com/69447074/150819981-596682ab-7258-48a5-929b-40fa3bb51559.png">
+
 - Create your fully customisable NFT using the paint tools.
 - Click "Next" when you are happy with your NFT.
 - Fill in the fields and you are almost done.
 <img width="1273" alt="image" src="https://user-images.githubusercontent.com/69447074/150820721-001dc23a-6b65-47f2-8114-1581b7a485b3.png">
+
 - Click on "Finish" and pay the gas fees. Please make sure your account has Polygon MATIC testnet tokens.
 <img width="1277" alt="image" src="https://user-images.githubusercontent.com/69447074/150821162-dc532ec1-e60a-4c06-9882-ee08841b11dc.png">
+
 - The page is now deployed on Openseas testnet using Polygon MATIC.
 <img width="1266" alt="image" src="https://user-images.githubusercontent.com/69447074/150826144-0b92f2b3-09e7-490d-96ac-9fbdab7f9f4d.png">
+
 - The page can be viewed in Openseas under the user's account which is linked to the user's MetaMask wallet. From here the user can sell and auction his NFT on the wider marketplace. (Due to a bug the NFT image does not show up on openseas)
 <img width="1271" alt="image" src="https://user-images.githubusercontent.com/69447074/150826337-62741f68-5e4a-4b9a-abb9-2b2210158992.png">
 
