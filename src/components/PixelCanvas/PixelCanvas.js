@@ -6,24 +6,26 @@ import Tools from "./Tools";
 import { colors, tools } from "./config";
 import Frames from "./utils/Frames";
 import Popup from "./utils/Popup";
-import {Point} from "./utils/Shapes";
+import { Point } from "./utils/Shapes";
 import useScript from "./utils/useScript";
+import PixelDimms from "./PixelDimms";
+
+import { Flex, useColorMode } from "@chakra-ui/react";
 
 import { useState, useEffect, useRef } from "react";
 
 const pixel_canvas_dim = (b_m) => {
   let imgRes = b_m.getImgRes();
   let aspectRatio = imgRes.width / imgRes.height;
-  console.log(`aspect ratio: ${aspectRatio}`)
-  let w = window.innerWidth/3;
-  let h =  w / aspectRatio;
-  
-  return {
-    width:w,
-    height:h 
-  };
-}
+  console.log(`aspect ratio: ${aspectRatio}`);
+  let w = window.innerWidth / 3;
+  let h = w / aspectRatio;
 
+  return {
+    width: w,
+    height: h,
+  };
+};
 
 const popupClick = () => {};
 //TODO: On window resize, do the three.js typical resize code
@@ -39,21 +41,21 @@ const PixelCanvas = ({}) => {
 
   let canvasData = localStorage.getItem("pc-canvas-data");
   const resizeHandler = () => {
-    console.log("RESIZE HANDLER")
+    console.log("RESIZE HANDLER");
     // save img first before clear
     let imgSoFar = board_manager.saveImgUrl();
 
     // setSize(pixel_canvas_dim(board_manager))
-    let newCanvasRes = pixel_canvas_dim(board_manager)
-    board_manager.setCanvasRes(newCanvasRes)
+    let newCanvasRes = pixel_canvas_dim(board_manager);
+    board_manager.setCanvasRes(newCanvasRes);
     board_manager.handleWindowResize();
     board_manager.setImage(imgSoFar);
-  }
+  };
   useScript("/lib/gif.js");
   useEffect(() => {
     let canvasEl = canvas.current;
     let canvasGridEl = canvas_grid.current;
-    console.log(canvas_grid)
+    console.log(canvas_grid);
     board_manager.setCanvas(canvasEl);
     board_manager.setCanvasGrid(canvasGridEl);
     let ctx = canvasEl.getContext("2d");
@@ -62,18 +64,17 @@ const PixelCanvas = ({}) => {
     ctx.globalAlpha = 1;
     ctx.fillRect(0, 0, canvasEl.width, canvasEl.height);
     // window.onmouseup = () => setActive(false);
-    let newCanvasRes = pixel_canvas_dim(board_manager)
-    board_manager.setCanvasRes(newCanvasRes)
+    let newCanvasRes = pixel_canvas_dim(board_manager);
+    board_manager.setCanvasRes(newCanvasRes);
     board_manager.setDimmensions();
     // resizeHandler();
-    window.addEventListener('resize', resizeHandler);
-
+    window.addEventListener("resize", resizeHandler);
 
     return () => {
-      window.removeEventListener('resize', resizeHandler);
+      window.removeEventListener("resize", resizeHandler);
       board_manager.saveInLocal();
       return "Data will be lost if you leave the page, are you sure?";
-    }
+    };
   }, []);
 
   // function handleClick(e) {
@@ -96,13 +97,25 @@ const PixelCanvas = ({}) => {
           canvas={canvas}
           canvas_grid={canvas_grid}
         />
-        <Palette board_manager={board_manager} />
+        <Flex
+          // w="100%"
+          h="50%"
+          justifyContent="space-around"
+          alignItems="center"
+          flexDirection="column"
+        >
+          <Palette board_manager={board_manager} />
+          <PixelDimms board_manager={board_manager} />
+        </Flex>
         {isFramesOpen && <Frames togglesFrames={togglesFrames} />}
       </PixelCanvasBody>
       {board_manager.isPopup && (
-        <Popup clickHandler={popupClick} board_manager={board_manager} imgRes={board_manager.imgRes} />
+        <Popup
+          clickHandler={popupClick}
+          board_manager={board_manager}
+          imgRes={board_manager.imgRes}
+        />
       )}
-      
     </>
   );
 };
