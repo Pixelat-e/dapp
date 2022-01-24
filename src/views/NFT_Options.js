@@ -1,16 +1,23 @@
 import React from "react";
 
-import Navbar from "components/Navbars/AuthNavbar.js";
+import Navbar from "components/Navbars/IndexNavbar";
 import Footer from "components/Footers/Footer.js";
+
+
+import BoardManager from "../components/PixelCanvas/BoardManager"; 
+
 export default function NFT_Options() {
+
+  let bm = new BoardManager();
+
   return (
     <>
       <Navbar transparent />
       <div className="flex flex-row pt-32 pb-64">
         <div className="w-1/2 p-8">
           <img
-            src="https://media.karousell.com/media/photos/products/2022/1/15/nft_digitalised_pixel_art_1642254510_bbb89d3b_progressive_thumbnail.jpg"
-            alt="..."
+            src={bm.getLocalImg()}
+            alt="https://media.karousell.com/media/photos/products/2022/1/15/nft_digitalised_pixel_art_1642254510_bbb89d3b_progressive_thumbnail.jpg"
             className="shadow-lg rounded max-w-full h-auto align-middle border-none"
           />
         </div>

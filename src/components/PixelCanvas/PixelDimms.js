@@ -7,24 +7,42 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
-  Spacer
+  Spacer,
 } from "@chakra-ui/react";
 import { useState, useEffect, useRef } from "react";
 const PixelDimms = ({ board_manager }) => {
   const [imgRes, setImgRes] = useState(board_manager.getImgRes());
   const { colorMode, toggleColorMode } = useColorMode();
   const clickHandler = () => {
+    // console.log("Local img res");
     board_manager.setImgRes(imgRes);
   };
-  const handleInputChange = (e) => {
-    let newVal = e.target.value;
-    // if (e.target.name == "width"){
+  //   const handleInputChange = (e) => {
+  //     console.log(e);
+  //     let newVal = e.target.value;
+  //     // if (e.target.name == "width"){
 
-    // }
+  //     // }
+  //     setImgRes({
+  //       ...imgRes,
+  //       [e.target.name]: newVal,
+  //     });
+  //   };
+
+  const handleInputChangeW = (val) => {
     setImgRes({
       ...imgRes,
-      [e.target.name]: newVal,
+      ["width"]: val,
     });
+    clickHandler();
+  };
+
+  const handleInputChangeH = (val) => {
+    setImgRes({
+      ...imgRes,
+      ["height"]: val,
+    });
+    clickHandler();
   };
 
   return (
@@ -42,8 +60,8 @@ const PixelDimms = ({ board_manager }) => {
           defaultValue={imgRes.width}
           min={1}
           max={256}
-          onChange={handleInputChange}
           name="width"
+          onChange={handleInputChangeW}
         >
           <NumberInputField />
           <NumberInputStepper>
@@ -51,15 +69,13 @@ const PixelDimms = ({ board_manager }) => {
             <NumberDecrementStepper />
           </NumberInputStepper>
         </NumberInput>
-        <div className="px-4">
-            X
-        </div>
+        <div className="px-4">X</div>
         <NumberInput
           defaultValue={imgRes.height}
           min={1}
           max={256}
-          onChange={handleInputChange}
           name="height"
+          onChange={handleInputChangeH} 
         >
           <NumberInputField />
           <NumberInputStepper>
@@ -69,9 +85,9 @@ const PixelDimms = ({ board_manager }) => {
         </NumberInput>
       </Flex>
       <Spacer />
-      <button id="close" onClick={clickHandler}>
+      <Button id="close" onClick={clickHandler}>
         OK
-      </button>
+      </Button>
     </Flex>
   );
 };

@@ -39,17 +39,17 @@ const PixelCanvas = ({}) => {
   const board_manager = new BoardManager();
   // const [size, setSize] = useState(pixel_canvas_dim(board_manager));
 
-  let canvasData = localStorage.getItem("pc-canvas-data");
+  // let canvasData = localStorage.getItem("pc-canvas-data");
   const resizeHandler = () => {
     console.log("RESIZE HANDLER");
     // save img first before clear
-    let imgSoFar = board_manager.saveImgUrl();
+    // let imgSoFar = board_manager.saveImgUrl();
 
     // setSize(pixel_canvas_dim(board_manager))
-    let newCanvasRes = pixel_canvas_dim(board_manager);
-    board_manager.setCanvasRes(newCanvasRes);
+    // let newCanvasRes = pixel_canvas_dim(board_manager);
+    // board_manager.setCanvasRes(newCanvasRes);
     board_manager.handleWindowResize();
-    board_manager.setImage(imgSoFar);
+    // board_manager.setImage(imgSoFar);
   };
   useScript("/lib/gif.js");
   useEffect(() => {
@@ -63,10 +63,11 @@ const PixelCanvas = ({}) => {
     ctx.fillStyle = "white";
     ctx.globalAlpha = 1;
     ctx.fillRect(0, 0, canvasEl.width, canvasEl.height);
+    board_manager.handleWindowResize();
     // window.onmouseup = () => setActive(false);
-    let newCanvasRes = pixel_canvas_dim(board_manager);
-    board_manager.setCanvasRes(newCanvasRes);
-    board_manager.setDimmensions();
+    // let newCanvasRes = pixel_canvas_dim(board_manager);
+    // board_manager.setCanvasRes(newCanvasRes);
+    // board_manager.setDimmensions();
     // resizeHandler();
     window.addEventListener("resize", resizeHandler);
 

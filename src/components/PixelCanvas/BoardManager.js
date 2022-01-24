@@ -3,7 +3,7 @@ import { colors, tools } from "./config";
 import { Point, circle, ellipse, line } from "./utils/Shapes";
 // import * as from "./lib/gif";
 
-
+const DEFAULT_IMG_RES = { width: 64, height: 64 }
 
 
 export default class BoardManager {
@@ -11,7 +11,7 @@ export default class BoardManager {
   brushColor = colors[0];
   curTool = tools[0];
   canvasRes = { width: 256, height: 256 };
-  imgRes = { width: 32, height: 32 };
+  imgRes = DEFAULT_IMG_RES;
   imgData = [...Array(this.imgRes.width)].map(e => Array(this.imgRes.height).fill([255, 255, 255, 255]));
   isActive = true;
   previous_point = null;
@@ -47,6 +47,8 @@ export default class BoardManager {
 
   setImgRes(c_r){
     this.imgRes = c_r;
+    this.handleWindowResize();
+    // this.setDimmensions();
   }
 
   getCurTool(){
@@ -71,6 +73,10 @@ export default class BoardManager {
     this.ctx.fillStyle = "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")";
     this.ctx.globalAlpha = 1; // TODO: this may not be necessary
     this.brushColor = color;
+  }
+
+  getCanvas(){
+    return this.canvas;
   }
 
   setCanvas(canvas) {
@@ -104,18 +110,18 @@ export default class BoardManager {
   }
 
   drawPoint(x, y, count = false) {
-    console.log(`DRAW POINT: ${x}, ${y}`)
-    console.log(this.imgRes);
-    console.log("ctx")
+    // console.log(`DRAW POINT: ${x}, ${y}`)
+    // console.log(this.imgRes);
+    // console.log("ctx")
     // console.log(this.ctx)
     if (x >= 0 && x < this.imgRes.width && y >= 0 && y < this.imgRes.height) {
-      console.log("VALID POINT")
+      // console.log("VALID POINT")
       this.imgData[x][y] = this.brushColor;
       // console.log(this.imgData)
-      console.log(this.ctx)
-      console.log(this.canvasRes)
+      // console.log(this.ctx)
+      // console.log(this.canvasRes)
       let scaleRatio = this.canvasRes.width / this.imgRes.width;
-      console.log(`scaleRatio: ${scaleRatio}, ${x * scaleRatio}, ${y * scaleRatio}`)
+      // console.log(`scaleRatio: ${scaleRatio}, ${x * scaleRatio}, ${y * scaleRatio}`)
       this.ctx.fillRect(
         x * scaleRatio,
         y * scaleRatio,
@@ -277,10 +283,10 @@ export default class BoardManager {
   setImage = (url) => {
     let img = new Image();
     img.setAttribute('src', url);
-    img.setAttribute('height', `${this.canvasRes.height}px`);
-    img.setAttribute('width', `${this.canvasRes.width}px`);
+    // img.setAttribute('height', `${this.canvasRes.height}px`);
+    // img.setAttribute('width', `${this.canvasRes.width}px`);
     img.addEventListener("load",  () => {
-        console.log(img)
+        // console.log(img)
         this.ctx.drawImage(img, 0, 0,this.canvasRes.height,this.canvasRes.width);
     });
   }
@@ -289,21 +295,44 @@ export default class BoardManager {
     return this.canvas.toDataURL()
   }
 
+
   saveInLocal = () => {
     /*let a = this.frames.map(frame=> [frame[0].src,frame[1]]);
     let f =  JSON.stringify(a);*/
     let d = {
-      colors: window.colors,
-      currColor: this.color,
-      width: this.width,
-      height: this.height,
+      color: this.getCurBrushColor(),
+      tool: this.getCurTool(),
+      canvasRes: this.getCanvasRes(),
+      imgRes: this.getImgRes(),
       url: this.saveImgUrl(),
       steps: this.steps,
       redo_arr: this.redo_arr,
-      dim: window.dim,
+      // dim: window.dim,
     };
     localStorage.setItem("pc-canvas-data", JSON.stringify(d));
   };
+
+  getLocalImg = () => {
+    let canvasData = localStorage.getItem('pc-canvas-data');
+    if(canvasData){
+      let data = JSON.parse(canvasData);
+      return data.url
+    }
+    return null;
+  }
+
+  // In case you were working halfway and something bad happens
+  restoreBoardCache = () => {
+    let canvasData = localStorage.getItem('pc-canvas-data');
+    if(canvasData){
+      let data = JSON.parse(canvasData);
+      console.log(data);
+      this.setImage();
+      return true;
+    } 
+
+    return false;
+  }
 
   addImage = () => {
     var _this = this;
@@ -319,7 +348,7 @@ export default class BoardManager {
         uimg.width = _this.w;
         uimg.height = _this.h;
         uimg.onload = function () {
-          var pxc = document.createElement("canvas");
+          var pxc = _this.getCanvas()//document.createElement("canvas");
           pxc.width = _this.w;
           pxc.height = _this.h;
           var pxctx = pxc.getContext("2d");
@@ -445,8 +474,22 @@ export default class BoardManager {
     // let bounds = this.canvas.getBoundingClientRect();
     // this.canvasRes.width = bounds.clientWidth;
     // this.canvasRes.height = bounds.clientHeight;
-    this.setDimmensions();
     
+
+    // TODO: Save image as array first, otherwise subject to compression
+    let imgSoFar = this.saveImgUrl();
+    let imgRes = this.getImgRes();
+    let aspectRatio = imgRes.width / imgRes.height;
+    console.log(`aspect ratio: ${aspectRatio}`);
+    let w = window.innerWidth / 3;
+    let h = w / aspectRatio;
+    let newCanvasRes = {
+      width: w,
+      height: h,
+    }
+    this.setCanvasRes(newCanvasRes);
+    this.setDimmensions();
+    this.setImage(imgSoFar);
   }
 
 }
