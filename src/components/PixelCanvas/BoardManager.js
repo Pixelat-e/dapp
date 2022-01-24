@@ -242,7 +242,7 @@ export default class BoardManager {
     for (i = 0; i < this.width; i++) {
       for (j = 0; j < this.height; j++) {
         this.setCurBrushColor(img[i][j]);
-        this.draw(i, j);
+        this.drawPoint(i, j);
       }
     }
     this.setCurBrushColor(tmp_color);
@@ -266,7 +266,7 @@ export default class BoardManager {
     this.steps.forEach((step) => {
       this.setCurBrushColor(step[2]);
       this.ctx.globalAlpha = step[3];
-      this.draw(step[0], step[1], true);
+      this.drawPoint(step[0], step[1], true);
     });
   };
 
@@ -276,7 +276,7 @@ export default class BoardManager {
     this.steps.forEach((step) => {
       this.setCurBrushColor(step[2]);
       this.ctx.globalAlpha = step[3];
-      this.draw(step[0], step[1], true);
+      this.drawPoint(step[0], step[1], true);
     });
   };
 
@@ -355,19 +355,22 @@ export default class BoardManager {
       var reader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
       reader.onload = function () {
+        console.log("File loaded");
+        console.log(reader);
         var uimg = new Image();
         uimg.src = reader.result;
-        uimg.width = _this.w;
-        uimg.height = _this.h;
+        uimg.width = _this.canvasRes.width;
+        uimg.height = _this.canvasRes.height;
         uimg.onload = function () {
           var pxc = _this.getCanvas()//document.createElement("canvas");
-          pxc.width = _this.w;
-          pxc.height = _this.h;
+          console.log(pxc);
+          // pxc.width = _this.w;
+          // pxc.height = _this.h;
           var pxctx = pxc.getContext("2d");
-          pxctx.drawImage(uimg, 0, 0, _this.w, _this.h);
+          pxctx.drawImage(uimg, 0, 0, uimg.width, uimg.height);
           var i, j;
-          for (i = 0; i < _this.width; i++) {
-            for (j = 0; j < _this.height; j++) {
+          for (i = 0; i < _this.imgRes.width; i++) {
+            for (j = 0; j < _this.imgRes.height; j++) {
               var ctr = 0;
               var avg = [0, 0, 0, 0];
               var pix = pxctx.getImageData(10 * i, 10 * j, 10, 10).data;
@@ -377,7 +380,7 @@ export default class BoardManager {
               });
               avg = avg.map((x) => ~~(x / ctr));
               _this.setCurBrushColor(avg);
-              _this.draw(i, j);
+              _this.drawPoint(i, j);
             }
           }
         };
