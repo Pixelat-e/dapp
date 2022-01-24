@@ -9,6 +9,7 @@ An easy all-in-one platform for founders without technical skills to create thei
 PIXELATE is Free and Open Source. It written using Notus React, tailwindCSS and Solidity. The Solidity contract automatically mints the art on the Polygon MATIC blockchain and deploys it to the Openseas account linked to the MetaMask wallet used by the user. This makes it a breeze for anyone to setup a NFT.
 
 **Solidity Contract: [0x6ce167e780A30FC34e43a58D0DF957197d374005](https://mumbai.polygonscan.com/address/0x6ce167e780A30FC34e43a58D0DF957197d374005)** 
+
 **Team Video: [Youtube](https://youtu.be/JiU6nnyxZEE)**
 
 ![PIXELATE](https://user-images.githubusercontent.com/69447074/150817999-cbffd02a-c58c-4f3f-9707-d7695712dd93.png)
