@@ -41,7 +41,7 @@ const PixelMenu = ({ board_manager }) => {
       </Button>
       <Button className="m-4" onClick={downloadHandler}>
         <DownloadIcon />
-        <div className="mx-4">Donwload</div>
+        <div className="mx-4">Download</div>
       </Button>
       <Button className="m-4" onClick={toDetailsHandler}>
         {/* <a href="/details"> */}
