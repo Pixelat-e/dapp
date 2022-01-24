@@ -37,7 +37,7 @@ ReactDOM.render(
           <Route path="/auth" component={Auth} />
           {/* add routes without layouts */}
           <Route path="/landing" exact component={Landing} />
-          <Route path="/final" exact component={Final} />
+          <Route path="/profile" exact component={Final} />
           <Route path="/pixel_canvas" exact component={NFT_Create} />
           <Route path="/options" exact component={NFT_Options} />
           <Route path="/" exact component={Index} />
