@@ -41,9 +41,10 @@ export default function NFT_Options() {
   const uploadImg = async () => {
     // const file = new Moralis.File("test.img", { base64: imgUrl });
 
-    // let imgFile = await bm.urltoFile(imgUrl,`${meta.name}.png`);
-
-    const file = new Moralis.File(`${meta.name}.png`, { base64: imgUrl });
+    let imgFile = await bm.urltoFile(imgUrl,`${meta.name}.png`);
+    console.log("uploadImg")
+    console.log(imgUrl)
+    const file = new Moralis.File(`${meta.name}.png`, imgFile);   //{ base64: imgUrl }
     await file.saveIPFS({ useMasterKey: true });
     console.log(file.ipfs(), file.hash());
     return file;
