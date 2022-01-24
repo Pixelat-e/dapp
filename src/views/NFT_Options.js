@@ -6,6 +6,14 @@ export default function NFT_Options() {
   return (
     <>
       <Navbar transparent />
+      <div className="flex flex-row">
+        <div className="w-6/12 sm:w-4/12 px-4">
+          <img
+            src="https://media.karousell.com/media/photos/products/2022/1/15/nft_digitalised_pixel_art_1642254510_bbb89d3b_progressive_thumbnail.jpg"
+            alt="..."
+            className="shadow-lg rounded max-w-full h-auto align-middle border-none"
+          />
+        </div>
       <div class="w-1/2 max-w-xs p-20">
         <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
           <div class="mb-4">
@@ -63,7 +71,8 @@ export default function NFT_Options() {
             </div>
           </div>
         </form>
-      </div>
+        </div>
+        </div>
       <Footer />
     </>
   );
